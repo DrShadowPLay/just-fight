@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import { apiRouter } from './api'
+import {creatTbables} from "./models/db";
 
 const dotenv = require('dotenv');
 dotenv.config({ path: './config/app.env' });
@@ -17,3 +18,4 @@ app.use((_req, res) => {
 app.listen(process.env.NODE_PORT, () => {
   console.log(`App listening at http://localhost:${process.env.NODE_PORT}`)
 });
+creatTbables();
