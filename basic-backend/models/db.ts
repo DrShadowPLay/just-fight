@@ -33,7 +33,7 @@ export function creatTbables() {
         }
     });
 
-    db.run("CREATE TABLE IF NOT EXISTS TrP_Üb(trainingsP_id INTEGER NOT NULL REFERENCES TrainingsPlan(trainingsP_id) ,uebungs_id INTEGER  NOT NULL REFERENCES Uebung(uebungs_id), PRIMARY  KEY(trainingsP_Id, uebungs_id));", err => {
+    db.run("CREATE TABLE IF NOT EXISTS TrP_Üb(trainingsP_id INTEGER NOT NULL REFERENCES TrainingsPlan(trainingsP_id) ,uebungs_id INTEGER  NOT NULL REFERENCES Uebung(uebungs_id), numberOfSameUebungenInOneTrainingsPlan INTEGER, PRIMARY  KEY(trainingsP_Id, uebungs_id));", err => {
         if (err) {
             console.log(err.message + "in TrP_ÜB");
         } else {
@@ -82,7 +82,7 @@ export function creatTbables() {
         }
     });
 
-    db.run("CREATE TABLE IF NOT EXISTS Uebgroup(uebungs_id INTEGER  NOT NULL REFERENCES Uebung(uebungs_id),trainingsGroup_id INTEGER  NOT NULL REFERENCES TrainingsGroup(trainingsGroup_id), PRIMARY KEY (uebungs_id, trainingsGroup_id));", err => {
+    db.run("CREATE TABLE IF NOT EXISTS Uebgroup( uebungs_id INTEGER  NOT NULL REFERENCES Uebung(uebungs_id),trainingsGroup_id INTEGER  NOT NULL REFERENCES TrainingsGroup(trainingsGroup_id),numberOfSameUebungenInUebungsGroup INTEGER, PRIMARY KEY (uebungs_id, trainingsGroup_id));", err => {
         if (err) {
             console.log(err.message + " in Übgroup");
         } else {
@@ -92,3 +92,5 @@ export function creatTbables() {
 
 
 }
+
+

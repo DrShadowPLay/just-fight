@@ -4,6 +4,7 @@ import * as logger from './util/logger'
 let router = express.Router();
 router.use(logger.logToConsole);
 router.use(express.json());
+//router.use('/uebungen' , ())
 router.use('/', (_req: express.Request, res: express.Response) => {
     res.status(200);
     res.send("start api!");
