@@ -1,6 +1,6 @@
 import {db} from "./db"
 
-export interface school{
+export interface teacher{
     school_id: number,
     school_name: string,
     school_palce: string,

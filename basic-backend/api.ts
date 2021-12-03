@@ -1,17 +1,17 @@
-import express from 'express'
-import * as logger from './util/logger';
-import cors from 'cors';
-const router = express.Router();
+import * as express from "express";
+import * as logger from './util/logger'
 
-router.use(cors());
-router.use(express.json());
+let router = express.Router();
 router.use(logger.logToConsole);
-
-
+router.use(express.json());
+router.use('/', (_req: express.Request, res: express.Response) => {
+    res.status(200);
+    res.send("start api!");
+});
 router.use((_req: express.Request, res: express.Response) => {
-  res.status(404);
-  res.send('Route does not exist');
+    res.status(404)
+    res.send('Route does not exist');
+
 });
 
-export { router as apiRouter }
-
+export {router as api}

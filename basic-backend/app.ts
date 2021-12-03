@@ -1,21 +1,21 @@
-import express from 'express';
-import path from 'path';
-import { apiRouter } from './api'
+
+import express  from 'express';
+const app = express();
+import {api} from "./api";
 import {creatTbables} from "./models/db";
 
-const dotenv = require('dotenv');
-dotenv.config({ path: './config/app.env' });
+app.use(express.json());
+app.use('/api', api);
+app.use('/', (_rep : express.Request, res: express.Response)=> {
+  res.status(200);
+  res.send("Hello and WElcome");
 
-const app = express();
-
-app.use('/api', apiRouter);
-
-app.use(express.static(process.env.FRONTEND_DIST_PATH as string));
-app.use((_req, res) => {
-  res.sendFile(path.join(__dirname, process.env.FRONTEND_DIST_PATH as string, 'index.html'))
 });
 
-app.listen(process.env.NODE_PORT, () => {
-  console.log(`App listening at http://localhost:${process.env.NODE_PORT}`)
-});
+app.listen(3000,()=>{
+  console.log('Backend listening at http://localhost:3000');
+})
 creatTbables();
+
+
+
