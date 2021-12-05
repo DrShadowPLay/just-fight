@@ -146,15 +146,6 @@ export function getOneUebungFromTrainigsPlan(uebungs_id: number, trainingsP_ip: 
 }
 
 
-export async function nextFreeIndexFinder(array: Promise<Array<any>>): Promise<number> {
-    for (let index = 0; index < (await array).length; index++) {
-        if ((await array).indexOf(index)) {
-
-            return index;
-        }
-    }
-    return (await array).length;
-}
 
 
 export function addOneUebung(uebungs_beschreibung: string, uebungsZeitInMin: String) {
@@ -343,6 +334,15 @@ export function deleteSingelUebungInTrainingsplan( trainingsP_id:number, uebungs
     });
 }
 
+export async function nextFreeIndexFinder(array: Promise<Array<any>>): Promise<number> {
+    for (let index = 0; index < (await array).length; index++) {
+        if ((await array).indexOf(index)) {
+
+            return index;
+        }
+    }
+    return (await array).length;
+}
 
 
 
