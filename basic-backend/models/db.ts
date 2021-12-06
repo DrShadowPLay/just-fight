@@ -47,7 +47,7 @@ export function creatTbables() {
             console.log("CreatedTriningsgroup Table");
         }
     });
-    db.run("CREATE TABLE IF NOT EXISTS TrainingsPlan(trainingsP_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,student_id INTEGER  NOT NULL REFERENCES Student(student_id), trainingsGroup_id INTEGER NOT NULL REFERENCES TrainingsGroup(trainingsGroup_id), trainingsPlan_date DATE, trainingsPlan_time TIMESTAMP );", err => {
+    db.run("CREATE TABLE IF NOT EXISTS TrainingsPlan(trainingsP_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,student_id INTEGER  REFERENCES Student(student_id), trainingsGroup_id INTEGER REFERENCES TrainingsGroup(trainingsGroup_id), trainingsPlan_date DATE, trainingsPlan_time TIMESTAMP );", err => {
         if (err) {
             console.log(err.message + "in Trainignsplan");
         } else {
