@@ -52,3 +52,5 @@ router.delete('/:id', (req: any, res: any) => {
         res.status(400).send("badRequest");
     }
 });
+
+export {router as trainingsPlanRouter};

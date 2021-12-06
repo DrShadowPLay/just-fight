@@ -6,7 +6,7 @@ import {getAllUebungenFromTrainingsplan, uebungen} from "./uebungen";
 export interface student {
     student_id: number,
     student_name: string,
-    stundent_lastName: string,
+    student_lastName: string,
     student_age: number,
     student_lvl: number,
     student_mail: string,
@@ -35,7 +35,7 @@ export function getAllStudentsGenerell(): Promise<student[]> {
                         let thisStudent: student = {
                             student_id: studenRowElement.student_id,
                             student_name: studenRowElement.student_name,
-                            stundent_lastName: studenRowElement.stundent_lastName,
+                            student_lastName: studenRowElement.stundent_lastName,
                             student_age: studenRowElement.student_age,
                             student_lvl: studenRowElement.student_lvl,
                             student_mail: studenRowElement.student_mail,
@@ -77,7 +77,7 @@ export function getOneStudent(student_id:number) : Promise<student>{
                    let thisStudent: student = {
                        student_id : studentRow.student_id,
                        student_name: studentRow.student_name,
-                       stundent_lastName: studentRow.stundent_lastName,
+                       student_lastName: studentRow.student_lastName,
                        student_age: studentRow.student_age,
                        student_lvl: studentRow.student_lvl,
                        student_mail: studentRow.student_mail,
@@ -116,7 +116,7 @@ export  function getOneStudentFromSchool(school_id: number , student_id: number)
                    let thisStudent : student = {
                        student_id : studentRow.student_id,
                        student_name: studentRow.student_name,
-                       stundent_lastName: studentRow.stundent_lastName,
+                       student_lastName: studentRow.student_lastName,
                        student_age: studentRow.student_age,
                        student_lvl: studentRow.student_lvl,
                        student_mail: studentRow.student_mail,
@@ -153,7 +153,7 @@ export function getAllStudentsFromSchool(school_id : number): Promise<student[]>
                        let thisStudnet: student = {
                            student_id : studentRowElement.student_id,
                            student_name: studentRowElement.student_name,
-                           stundent_lastName: studentRowElement.stundent_lastName,
+                           student_lastName: studentRowElement.student_lastName,
                            student_age: studentRowElement.student_age,
                            student_lvl: studentRowElement.student_lvl,
                            student_mail: studentRowElement.student_mail,

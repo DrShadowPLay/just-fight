@@ -55,16 +55,16 @@ export function creatTbables() {
         }
     });
 
-    db.run("CREATE TABLE IF NOT EXISTS Teacher( teacher_Id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT, school_id INTEGER  NOT NULL REFERENCES School(school_id), teacher_name VARCHAR NOT NULL, teacher_lastName VARCHAR NOT NULL ,teacher_mail VARCHAR, teacher_telNumber VARCHAR);", err => {
+    db.run("CREATE TABLE IF NOT EXISTS Teacher( teacher_id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT, school_id INTEGER  NOT NULL REFERENCES School(school_id), teacher_name VARCHAR NOT NULL, teacher_lastName VARCHAR NOT NULL ,teacher_mail VARCHAR, teacher_telNumber VARCHAR);", err => {
         if (err) {
             console.log(err.message + "in Teacher");
         } else {
-            console.log("Created Teacher Table")
+            console.log("Created Teacher Table");
         }
 
     });
 
-    db.run("CREATE TABLE IF NOT EXISTS  SchoStud(school_Id INTEGER NOT NULL REFERENCES School(school_id), student_id INTEGER NOT NULL REFERENCES Student(student_id), PRIMARY KEY (school_id, student_id));", err => {
+    db.run("CREATE TABLE IF NOT EXISTS  SchoStud(school_id INTEGER NOT NULL REFERENCES School(school_id), student_id INTEGER NOT NULL REFERENCES Student(student_id), PRIMARY KEY (school_id, student_id));", err => {
         if (err) {
             console.log(err.message + "in SchoStud");
 
