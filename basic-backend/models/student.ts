@@ -1,4 +1,6 @@
 import {db} from "./db";
+import {getTrainingsPlanFromStudent, trainingsplan} from "./trainingsplan";
+import {getAllUebungenFromTrainingsplan, uebungen} from "./uebungen";
 
 
 export interface student {
@@ -8,29 +10,42 @@ export interface student {
     student_age: number,
     student_lvl: number,
     student_mail: string,
-    student_telNumber: number
+    student_telNumber: number,
+    trainingsPlan: trainingsplan
 }
 
 
 export function getAllStudentsGenerell(): Promise<student[]> {
     return new Promise<student[]>((resolve, reject) => {
+        let sudentArray : student[]  = [];
         db.all('SELECT * FROM Student;', (err, studentRow) => {
             if (err) {
                 reject(err);
                 console.log(err.message + "erro in getAllStudentsGenerell ");
             } else if (studentRow) {
-                let sudentArray : student[]  = [];
                 for (const studenRowElement of studentRow) {
-                    let thisStudent: student = {
-                        student_id: studenRowElement.student_id,
-                        student_name: studenRowElement.student_name,
-                        stundent_lastName: studenRowElement.stundent_lastName,
-                        student_age: studenRowElement.student_age,
-                        student_lvl: studenRowElement.student_lvl,
-                        student_mail: studenRowElement.student_mail,
-                        student_telNumber: studenRowElement.student_telNumber
-                    }
-                    sudentArray.push(thisStudent);
+                    let  trainingsPOfStudent : trainingsplan
+                    db.get('SELECT * FROM TrainingsPlan WHERE student_id = ?;', [studenRowElement.student_id], async (err, trainingsPlanRow) => {
+                        if (err) {
+                            console.log(err.message + " erro in getAllStudentsGenerell trainingsPlanRow");
+                            reject(err);
+                        } else if (trainingsPlanRow) {
+                             trainingsPOfStudent = await getTrainingsPlanFromStudent(studenRowElement.student_id)
+                        }
+                        let thisStudent: student = {
+                            student_id: studenRowElement.student_id,
+                            student_name: studenRowElement.student_name,
+                            stundent_lastName: studenRowElement.stundent_lastName,
+                            student_age: studenRowElement.student_age,
+                            student_lvl: studenRowElement.student_lvl,
+                            student_mail: studenRowElement.student_mail,
+                            student_telNumber: studenRowElement.student_telNumber,
+                            trainingsPlan: trainingsPOfStudent
+
+                        }
+                        sudentArray.push(thisStudent);
+                    });
+
                 }
                 resolve(sudentArray);
             }
@@ -43,22 +58,35 @@ export function getAllStudentsGenerell(): Promise<student[]> {
 
 export function getOneStudent(student_id:number) : Promise<student>{
     return  new Promise<student>((resolve, reject)=>{
+        let trainingsPOfStudend: trainingsplan;
        db.get('SELECT * From Student WHERE student_id  =?;' , [student_id], (err , studentRow) =>{
            if (err){
                console.log(err.message + "erro in getOneStudent");
                reject(err);
            }
            else if (studentRow){
-               let thisStudent: student = {
-                   student_id : studentRow.student_id,
-                   student_name: studentRow.student_name,
-                   stundent_lastName: studentRow.stundent_lastName,
-                   student_age: studentRow.student_age,
-                   student_lvl: studentRow.student_lvl,
-                   student_mail: studentRow.student_mail,
-                   student_telNumber: studentRow.student_telNumber
-               }
-               resolve(thisStudent);
+               db.get('SELECT * FROM TrainingsPlan WHERE student_id = ?;', [studentRow.student_id], async (err, trainingsPlanRow) => {
+                   if (err) {
+                       console.log(err.message + " erro in getAllStudentsGenerell trainingsPlanRow");
+                       reject(err);
+                   } else if (trainingsPlanRow) {
+                       trainingsPOfStudend = await getTrainingsPlanFromStudent(studentRow.student_id);
+
+                   }
+
+                   let thisStudent: student = {
+                       student_id : studentRow.student_id,
+                       student_name: studentRow.student_name,
+                       stundent_lastName: studentRow.stundent_lastName,
+                       student_age: studentRow.student_age,
+                       student_lvl: studentRow.student_lvl,
+                       student_mail: studentRow.student_mail,
+                       student_telNumber: studentRow.student_telNumber,
+                       trainingsPlan: trainingsPOfStudend
+                   }
+                   resolve(thisStudent);
+               });
+
            }
            else {
                reject("bad Requst");
@@ -76,16 +104,30 @@ export  function getOneStudentFromSchool(school_id: number , student_id: number)
                reject(err);
            }
            else if(studentRow) {
-               let thisStudent : student = {
-                   student_id : studentRow.student_id,
-                   student_name: studentRow.student_name,
-                   stundent_lastName: studentRow.stundent_lastName,
-                   student_age: studentRow.student_age,
-                   student_lvl: studentRow.student_lvl,
-                   student_mail: studentRow.student_mail,
-                   student_telNumber: studentRow.student_telNumber
-               }
-               resolve(thisStudent);
+               let trainingsPOfStudend : trainingsplan;
+               db.get('SELECT * FROM TrainingsPlan WHERE student_id = ?;', [studentRow.student_id], async (err, trainingsPlanRow) => {
+                   if (err) {
+                       console.log(err.message + " erro in getAllStudentsGenerell trainingsPlanRow");
+                       reject(err);
+                   } else if (trainingsPlanRow) {
+                       trainingsPOfStudend = await getTrainingsPlanFromStudent(studentRow.student_id);
+
+                   }
+                   let thisStudent : student = {
+                       student_id : studentRow.student_id,
+                       student_name: studentRow.student_name,
+                       stundent_lastName: studentRow.stundent_lastName,
+                       student_age: studentRow.student_age,
+                       student_lvl: studentRow.student_lvl,
+                       student_mail: studentRow.student_mail,
+                       student_telNumber: studentRow.student_telNumber,
+                       trainingsPlan: trainingsPOfStudend
+                   }
+                   resolve(thisStudent);
+
+               });
+
+
            }
            else{
                reject("bad requst");
@@ -104,18 +146,22 @@ export function getAllStudentsFromSchool(school_id : number): Promise<student[]>
            }
 
            else if(studentRow){
+               let trainingsPOfStudend : trainingsplan;
                let studentArray: student[] =[];
                for (const studentRowElement of studentRow){
-                   let thisStudnet: student = {
-                       student_id : studentRowElement.student_id,
-                       student_name: studentRowElement.student_name,
-                       stundent_lastName: studentRowElement.stundent_lastName,
-                       student_age: studentRowElement.student_age,
-                       student_lvl: studentRowElement.student_lvl,
-                       student_mail: studentRowElement.student_mail,
-                       student_telNumber: studentRowElement.student_telNumber
-                   }
-                   studentArray.push(thisStudnet);
+                   db.get('SELECT * FROM TrainingsPlan WHERE student_id = ?;', [studentRowElement.student_id], async (err, trainingsPlanRow) => {
+                       let thisStudnet: student = {
+                           student_id : studentRowElement.student_id,
+                           student_name: studentRowElement.student_name,
+                           stundent_lastName: studentRowElement.stundent_lastName,
+                           student_age: studentRowElement.student_age,
+                           student_lvl: studentRowElement.student_lvl,
+                           student_mail: studentRowElement.student_mail,
+                           student_telNumber: studentRowElement.student_telNumber,
+                           trainingsPlan: trainingsPOfStudend
+                       }
+                       studentArray.push(thisStudnet);
+                   });
                }
                resolve(studentArray);
            }
