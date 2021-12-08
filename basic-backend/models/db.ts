@@ -9,7 +9,7 @@ export const db = new sqlite.Database('./databases/db.sqlite', err => {
 });
 
 export function creatTbables() {
-    db.run("CREATE TABLE IF NOT EXISTS  School(school_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,school_name VARCHER NOT NULL, school_place VARCHAR NOT NULL, school_plz INT NOT NULL);", err => {
+    db.run("CREATE TABLE IF NOT EXISTS  School(school_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,school_name VARCHAR NOT NULL, school_place VARCHAR NOT NULL, school_plz INT NOT NULL);", err => {
         if (err) {
             console.log(err.message + "in createTabels");
         } else {
@@ -40,7 +40,7 @@ export function creatTbables() {
             console.log("you Created the TrP_Üb");
         }
     });
-    db.run("CREATE TABLE IF NOT EXISTS  TrainingsGroup(trainingsGroup_id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,trainigsGroup_name VARCHAR NOT NULL, trainingsGroup_difficulty VARCHAR ,trainingsGroup_duration TIMESTAMP);", err => {
+    db.run("CREATE TABLE IF NOT EXISTS  TrainingsGroup(trainingsGroup_id INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT ,trainingsGroup_name VARCHAR NOT NULL, trainingsGroup_difficulty VARCHAR ,trainingsGroup_duration TIMESTAMP);", err => {
         if (err) {
             console.log(err.message + "in Trainingsgoup");
         } else {

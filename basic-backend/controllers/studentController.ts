@@ -1,57 +1,97 @@
 import * as express from "express";
 import {
-    addOneStudent, deleteOneStudentFromSchoool,
+    addOneStudent, addOneStudentToSchool, deleteOneStudentFromSchoool,
     deleteOneStudentGenerel, deleteStudentFromTrainingsplan,
     getAllStudentsFromSchool,
     getAllStudentsGenerell,
-    getOneStudent
+    getOneStudent, getOneStudentFromSchool
 } from "../models/student";
+import {trainingsPlanRouter} from "./trainingsPlanController";
 
+declare module 'express-serve-static-core' {
+    export interface Request {
+        student_id?: string;
+    }
+}
 
 const router = express.Router();
-
-router.post('/' ,(req:any , res:any) =>{
-    addOneStudent(req.body.student_name , req.body.student_lastName , req.body.student_age, req.body.student_lvl  ,req.body.student_mail, req.body.student_telNumber);
-    res.status(200).send("student geaddet");
+router.use('/:student_id/trainingsplan', trainingsPlanRouter);
+router.param('student_id', (req: express.Request, res: express.Response, next: express.NextFunction, student_id: any) => {
+    req.student_id = student_id;
+    next();
 });
 
-router.get('/' ,(_req: any , res:any) =>{
-    if(_req.query.school_id) {
-        getAllStudentsFromSchool(+_req.query.school_id)
-    }
-    else{
-        getAllStudentsGenerell();
-        res.status(200).send("allStudents");
-    }
 
-});
-
-router.get('/:studend_id' , (req:any , res: any) =>{
-    getOneStudent(req.student_id).then(students => {
-        res.status(200).send("this students");
-    }).catch(err  =>{
-        res.status(404).send("keine solche schule");
+router.post('/', (req: any, res: any) => { //done
+    addOneStudent(req.body.student_name, req.body.student_lastName, req.body.student_age, req.body.student_lvl, req.body.student_mail, req.body.student_telNumber).then(student => {
+        console.log(req.body.student_lastName + "student_lastName");
+        res.status(200).send(student);
+    }).catch(err => {
+        res.status(404).send(err);
     });
 });
 
-router.delete('/:student_id', (req: any, res:any) =>{
-    if(req.query.school_id){
-        deleteOneStudentFromSchoool(req.query.school_id , req.student_id);
+router.post('/:student_id', (req: any, res: any) => {// done
+    addOneStudentToSchool(req.school_id, req.params.student_id).then(student => {
+        res.status(200).send(student);
+    }).catch(err => {
+        res.status(400).send(err);
+    });
+
+});
+
+router.get('/', (_req: any, res: any) => { //done
+    if (_req.school_id || _req.teacher_id) {
+        console.log(_req.school_id);
+        getAllStudentsFromSchool(_req.school_id).then(students => {
+            res.status(200).send(students);
+        }).catch(err => {
+            res.status(400).send(err);
+        });
+    } else {
+        getAllStudentsGenerell().then(students => {
+            res.status(200).send(students);
+        }).catch(err => {
+            res.status(404).send(err)
+        });
+    }
+
+});
+
+router.get('/:student_id', (req: any, res: any) => { //done
+    if (req.school_id) {
+        console.log(req.school_id + "in /:studend_id'" + req.params.student_id);
+        getOneStudentFromSchool(req.school_id, req.params.student_id).then(student => {
+            res.status(200).send(student);
+        }).catch(err => {
+            res.status(404).send(err);
+        });
+    } else {
+        getOneStudent(req.params.student_id).then(students => {
+            res.status(200).send(students);
+        }).catch(err => {
+            res.status(404).send(err);
+        });
+    }
+
+});
+
+router.delete('/:student_id', (req: any, res: any) => { //done
+    if (req.school_id) {
+        deleteOneStudentFromSchoool(req.school_id, req.params.student_id);
         res.status(200).send("studentGelöscht from school");
 
-    }
-    else if(req.query.trainingsplan_id){
-        deleteStudentFromTrainingsplan(req.student_id)
+    } else if (req.trainingsP_id) {
+        deleteStudentFromTrainingsplan(req.params.student_id)
         res.status(200).send("studentGelöscht from trainingsPlan");
 
-    }
-    else{
-        deleteOneStudentGenerel(req.student_id);
+    } else {
+        deleteOneStudentGenerel(req.params.student_id);
         res.status(200).send("studentGelöscht");
     }
 
 });
 
-export{router as studentRouter};
+export {router as studentRouter};
 
 

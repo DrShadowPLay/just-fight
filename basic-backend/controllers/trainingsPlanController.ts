@@ -1,55 +1,121 @@
 import * as express from "express";
 import {
-    addOneTrainingsPlanTostudent,
-    addOneTrainingsPlantoTrainingsGroup,
+    addOneTrainingsPlanTostudent, addOneTrainingsPlanTostudentWithGroup,
+    addOneTrainingsPlantoTrainingsGroup, addOneTrainingsPlantoTrainingsGroupWithStudent,
     deleteTrainingsPlanFromStudent, deleteTrainingsPlanFromTrainingsGroup,
     deleteTrainingsPlanGenerell,
-    getAllTrainigsplans,
-    getTrainingsPlanFromStudent
+    getAllTrainigsplans, getOneTrainigsplan,
+    getTrainingsPlanFromStudent, getTrainingsPlanFromTraininsGroup
 } from "../models/trainingsplan";
+import {uebungsRouter} from "./uebungenController";
 
 const router = express.Router();
 
-router.post('/', (req: any, res: any) => {
-    if (req.query.student_id) {
-        addOneTrainingsPlanTostudent(req.query.student_id, req.trainingsplan_date, req.trainingsplan_time);
-        res.status(200).send("trainingsplantoStudentaddet")
-    } else if (req.query.trainingsGroup_id) {
-        addOneTrainingsPlantoTrainingsGroup(req.query.trainingsGroup_id, req.trainingsplan_date, req.trainingsplan_time);
-        res.status(200).send("trainingsplantroGroupaddet")
+declare module 'express-serve-static-core' {
+    export interface Request {
+        trainingsP_id?: string;
+    }
+}
+
+router.use('/:trainingsP_id/uebungen', uebungsRouter);
+router.param('trainingsP_id', (req: express.Request, res:express.Response, next: express.NextFunction, trainingsP_id: any) =>{
+    req.trainingsP_id = trainingsP_id;
+    next();
+});
+router.post('/', (req: any, res: any) => { //done
+    if (req.student_id) { //done
+        console.log("go to addOneTrainingsPlanTostudent ");
+        if(req.body.trainingsGroup_id){
+            addOneTrainingsPlanTostudentWithGroup(req.student_id, req.body.trainingsGroup_id,req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
+                res.status(200).send(trainingsPlan)
+
+            }).catch(err => {
+                res.status(404).send(err);
+            });
+        }
+        else{
+            addOneTrainingsPlanTostudent(req.student_id, req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
+                res.status(200).send(trainingsPlan)
+
+            }).catch(err => {
+                res.status(404).send(err);
+            });
+        }
+    } else if (req.trainingsGroup_id) {
+        if(req.body.student_id){
+            console.log("go to addOneTrainingsPlantoTrainingsGroup");
+            addOneTrainingsPlantoTrainingsGroupWithStudent(req.trainingsGroup_id,req.body.student_id,  req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
+                res.status(200).send(trainingsPlan)
+
+            }).catch(err => {
+                res.status(404).send(err);
+            });
+        }
+        else{
+            console.log("go to addOneTrainingsPlantoTrainingsGroup");
+            addOneTrainingsPlantoTrainingsGroup(req.trainingsGroup_id, req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
+                res.status(200).send(trainingsPlan)
+
+            }).catch(err => {
+                res.status(404).send(err);
+            });
+        }
+
     } else {
         res.status(404).send("bad requst");
     }
 });
 
-router.get('/', (req: any, res: any) => {
-    if (req.query.student_id) {
-        getTrainingsPlanFromStudent(req.query.student_id);
-        res.status(200).send("gotTrainingsplanfromstudent");
-    } else if (req.query.trainingsGroup_id) {
-        res.status(200).send("gtoTrainingsplanFromGroup");
-    } else if (req.trainingsP_id) {
-        getAllTrainigsplans();
-        res.status(200).send("gotAllTrainingsplans");
-    } else {
-        res.status(400).send("badRequest");
+router.get('/', (req: any, res: any) => {//done
+    if (req.student_id) {//done
+        console.log("get trainingsP from student");
+        getTrainingsPlanFromStudent(req.student_id).then(trainingsPlans => {
+            res.status(200).send(trainingsPlans);
+
+        }).catch(err => {
+            res.status(400).send(err);
+        });
+    } else if (req.trainingsGroup_id) {//done
+        console.log("heelo in trainingsGroup")
+        getTrainingsPlanFromTraininsGroup(req.trainingsGroup_id).then(trainingsG => {
+            res.status(200).send(trainingsG);
+        }).catch(err => {
+            res.status(400).send(err);
+        });
     }
+
+     else {
+        getAllTrainigsplans().then(trainingsPlans => {
+            res.status(200).send(trainingsPlans);
+
+        }).catch(err => {
+            res.status(400).send(err);
+        });    }
 });
 
-router.delete('/:id', (req: any, res: any) => {
-    if (req.query.student_id) {
-        deleteTrainingsPlanFromStudent(req.query.student_id);
+
+router.get('/:trainingsP_id', (req:any, res:any) =>{ //done
+    getOneTrainigsplan(req.params.trainingsP_id).then(trainingsPlan =>{ //done
+        res.status(200).send(trainingsPlan);
+    }).catch(err =>{
+        res.status(404).send(err);
+    });
+})
+
+router.delete('/:trainingsP_id', (req: any, res: any) => {//done
+    if (req.student_id) { //done
+        deleteTrainingsPlanFromStudent(req.student_id);
         res.status(200).send("deletedTrainingsPlaFromStudent");
-    } else if (req.query.trainingsGroup_id) {
-        deleteTrainingsPlanFromTrainingsGroup(req.query.trainingsGroup_id);
+    } else if (req.trainingsGroup_id) {
+        deleteTrainingsPlanFromTrainingsGroup(req.trainingsGroup_id);
         res.status(200).send("deletetTrainingsPlanFromTRainingsGroup");
 
-    } else if (req.trainingsP_id) {
-        deleteTrainingsPlanGenerell(req.trainingsP_id);
+    } else {
+        console.log( req.params.trainingsP_id);
+        deleteTrainingsPlanGenerell(req.params.trainingsP_id);
         res.status(200).send("deletetTrainingsPlanGenerelll");
 
-    } else {
-        res.status(400).send("badRequest");
+
     }
 });
 

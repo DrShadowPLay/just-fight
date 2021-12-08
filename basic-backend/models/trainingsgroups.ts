@@ -1,5 +1,6 @@
 import {uebungen} from "./uebungen";
 import {db} from "./db";
+import {school} from "./school";
 
 
 export interface trainingsGroup {
@@ -13,19 +14,24 @@ export interface trainingsGroup {
 
 export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {
     return new Promise<trainingsGroup[]>((resolve, reject) => {
+        let trainingsGroupAnzahl: number = 0;
         let trainingsGroupsArray: trainingsGroup[] = [];
         db.all('SELECT * FROM TrainingsGroup; ', (err, trainingsGroupRow) => {
             if (err) {
                 console.log(err.message + "erro in getAllTrainingsGroups ");
                 reject(err);
-            } else if (trainingsGroupRow) {
+            } else if (trainingsGroupRow && trainingsGroupRow[0]) {
+                console.log("trainingsGroupRow:" + trainingsGroupRow);
+                trainingsGroupAnzahl = trainingsGroupRow.length;
+                let counter: number = 0;
                 let uebungeninGroupArray: uebungen[] = [];
                 for (const trainingsGroupRowElement of trainingsGroupRow) {
-                    db.all('SELECT u.uebungs_id, u.uebungs_bezeichung, u.eubungsZeitInMin FROM Uebung u , Uebgroup g WHERE  u.uebungs_id = g.uebungs_id AND g.trainingsGroup_id  = ? ;', [trainingsGroupRowElement.trainingsGroup_id], (err, uebungsRow) => {
+                    db.all('SELECT u.uebungs_id, u.uebungs_beschreibung, u.uebungsZeitInMin FROM Uebung u , Uebgroup g WHERE  u.uebungs_id = g.uebungs_id AND g.trainingsGroup_id  = ? ;', [trainingsGroupRowElement.trainingsGroup_id], (err, uebungsRow) => {
+                        counter = counter+ 1;
                         if (err) {
                             console.log(err.message + "erro in getAllTrainingsGroups  uebungeninGroupArray ");
                             reject(err);
-                        } else {
+                        } else if(uebungsRow) {
                             for (const uebungsRowElemet of uebungsRow) {
                                 let thisUebung: uebungen = {
                                     uebungs_id: uebungsRowElemet.uebungs_id,
@@ -33,24 +39,44 @@ export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {
                                     uebungsZeitInMin: uebungsRowElemet.uebungsZeitInMin
                                 }
                                 uebungeninGroupArray.push(thisUebung);
+
+                            }
+                            let thisUebungsGroup: trainingsGroup = {
+                                trainingsGroup_id: trainingsGroupRowElement.trainingsGroup_id,
+                                trainingsGroup_name: trainingsGroupRowElement.trainingsGroup_name,
+                                trainingsGroup_difficulty: trainingsGroupRowElement.trainingsGroup_difficulty,
+                                trainingsGroup_duration: trainingsGroupRowElement.trainingsGroup_duration,
+                                trainigsGroup_uebungen: uebungeninGroupArray
+                            }
+                            trainingsGroupsArray.push(thisUebungsGroup);
+                            if(counter == trainingsGroupAnzahl){
+                                console.log(trainingsGroupsArray);
+                                resolve(trainingsGroupsArray)
                             }
 
                         }
+                        else {
+                            let thisUebungsGroup: trainingsGroup = {
+                                trainingsGroup_id: trainingsGroupRowElement.trainingsGroup_id,
+                                trainingsGroup_name: trainingsGroupRowElement.trainingsGroup_name,
+                                trainingsGroup_difficulty: trainingsGroupRowElement.trainingsGroup_difficulty,
+                                trainingsGroup_duration: trainingsGroupRowElement.trainingsGroup_duration,
+                                trainigsGroup_uebungen: uebungeninGroupArray
+                            }
+                            trainingsGroupsArray.push(thisUebungsGroup);
+                            if(counter == trainingsGroupAnzahl){
+                                console.log(trainingsGroupsArray);
+                                resolve(trainingsGroupsArray)
+                            }
+                        }
+
 
                     });
-                    let thisUebungsGroup: trainingsGroup = {
-                        trainingsGroup_id: trainingsGroupRowElement.trainingsGroup_id,
-                        trainingsGroup_name: trainingsGroupRowElement.trainingsGroup_name,
-                        trainingsGroup_difficulty: trainingsGroupRowElement.trainingsGroup_difficulty,
-                        trainingsGroup_duration: trainingsGroupRowElement.trainingsGroup_duration,
-                        trainigsGroup_uebungen: uebungeninGroupArray
-                    }
-                    trainingsGroupsArray.push(thisUebungsGroup);
-                }
 
-                resolve(trainingsGroupsArray);
+                }
+                console.log("tainingsGroupArray:" + trainingsGroupsArray);
             } else {
-                reject("erro in getAllTrainingsGroups after trainingsGroupsArray.push ");
+                resolve(trainingsGroupsArray);
             }
         });
     });
@@ -103,8 +129,8 @@ export function getOneTrainierGroup(trainingsGroup_id: number): Promise<training
 }
 
 
-export function addTrainingsGroup(trainingsGroup_name: string, trainingsGroup_difficulty: string, trainingsGroup_duration: string) {
-    db.run('INSERT INTO TrainingsGroup (trainingsGroup_id, trainingsGroup_name , trainingsGroup_difficulty, trainingsGroup_duration) VALUE (?,?,?,?);', [getNextfreeIndexInTrainingsGroup(getAllTrainingsGroups()), trainingsGroup_name, trainingsGroup_difficulty, trainingsGroup_duration], (err) => {
+export async function addTrainingsGroup(trainingsGroup_name: string, trainingsGroup_difficulty: string, trainingsGroup_duration: string) {
+    db.run('INSERT INTO TrainingsGroup (trainingsGroup_id, trainingsGroup_name , trainingsGroup_difficulty, trainingsGroup_duration) VALUES (?,?,?,?);', [getNextfreeIndexInTrainingsGroup( await getAllTrainingsGroups()), trainingsGroup_name, trainingsGroup_difficulty, trainingsGroup_duration], (err) => {
         if (err) {
             console.log(err.message + "erro in addTrainingsGroup");
 
@@ -114,6 +140,7 @@ export function addTrainingsGroup(trainingsGroup_name: string, trainingsGroup_di
     });
 
 }
+
 
 export function deleteTrainingsGroup(trainingsGroup_id: number) {
     db.run('DELETE FROM TrainingsGroup WHERE trainingsGroup_id =  ? ;', [trainingsGroup_id] ,(err) => {
@@ -126,15 +153,16 @@ export function deleteTrainingsGroup(trainingsGroup_id: number) {
     });
 }
 
+export function getNextfreeIndexInTrainingsGroup(array: trainingsGroup[]): number {
+    array.sort(function (a, b){return a.trainingsGroup_id - b.trainingsGroup_id;});
 
-export async function getNextfreeIndexInTrainingsGroup(array: Promise<Array<any>>): Promise<number> {
-    for (let index = 0; index < (await array).length; index++) {
-        if ((await array).indexOf(index)) {
+
+    for (let index = 0; index < array.length; index++) {
+        if (array[index].trainingsGroup_id != index){
             return index;
         }
     }
 
-    return (await array).length;
+    return array.length;
 
 }
-
