@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {
   NbAccordionModule,
   NbButtonModule,
-  NbContextMenuModule,
+  NbContextMenuModule, NbDialogModule,
   NbIconModule,
   NbMenuModule,
   NbSidebarService
@@ -21,6 +21,7 @@ import {NbThemeModule, NbLayoutModule, NbSidebarModule} from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
 import {AccordionComponent} from "./core/sidebar/accordion/accordion.component";
+import {config} from "rxjs";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {AccordionComponent} from "./core/sidebar/accordion/accordion.component";
     NbMenuModule.forRoot(),
     NbIconModule,
     NbButtonModule,
+    NbDialogModule.forRoot(),
   ],
   providers: [NbSidebarService],
   bootstrap: [AppComponent]

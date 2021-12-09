@@ -3,6 +3,7 @@ import {NgModule} from '@angular/core';
 import {WelcomeRoutingModule} from './welcome-routing.module';
 import {WelcomePageComponent} from './welcome-page/welcome-page.component';
 import {SharedModule} from "../../shared/shared.module";
+import {NbButtonModule, NbCardModule} from "@nebular/theme";
 
 
 @NgModule({
@@ -11,7 +12,9 @@ import {SharedModule} from "../../shared/shared.module";
   ],
   imports: [
     SharedModule,
-    WelcomeRoutingModule
+    WelcomeRoutingModule,
+    NbButtonModule,
+    NbCardModule
   ]
 })
 export class WelcomeModule {

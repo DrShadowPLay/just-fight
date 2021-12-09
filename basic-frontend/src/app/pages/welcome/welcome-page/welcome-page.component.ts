@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {ApiService} from "../../../core/services/api.service";
+import {NbDialogService} from "@nebular/theme";
 
 @Component({
   selector: 'app-welcome-page',
@@ -12,13 +13,18 @@ export class WelcomePageComponent implements OnInit {
   filterInput: string;
 
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService ,private dialogService: NbDialogService) {
   }
+
+
+
 
   ngOnInit(): void {
   }
 
-
+  openDialog(dialog: TemplateRef<any>){
+    this.dialogService.open(dialog);
+  }
 }
 
 

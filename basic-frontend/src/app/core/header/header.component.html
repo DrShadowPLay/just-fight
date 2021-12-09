@@ -1,9 +1,10 @@
 <button id="sidebareButton"  nbButton hero status="info" outline  size="medium" (click)="toggle()">
   <nb-icon icon="list-outline"></nb-icon>
 </button>
-<button nbButton  hero status="info" outline size="medium">
+<a routerLink="/"><button nbButton  hero status="info" outline size="medium">
   <nb-icon icon="home-outline"></nb-icon>
-</button>
+</button></a>
+
 <button id="buttonMenue" outline hero status="info" nbButton outline  size="medium" [nbContextMenu]="items">
   <nb-icon icon="person-outline"></nb-icon>
 </button>

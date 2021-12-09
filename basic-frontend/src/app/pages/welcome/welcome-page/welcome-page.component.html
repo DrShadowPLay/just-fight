@@ -1,2 +1,17 @@
-
 <img id="logo" src="http://vt-kungfu.de/Bilder/justfight_logo1.jpg" width="100%" alt="vt" title="Justfight">
+<button id="infobutton" nbButton status="info" size="giant" shape="semi-round" (click)="openDialog(infoDialog)">Interesse? <br>Kontaktier uns</button>
+<ng-template #infoDialog let-ref="dialogRef">
+  <nb-card shape>
+  <nb-card-header>
+    <h1>Just Fight Ving-Tsun</h1>
+  </nb-card-header>
+    <nb-card-body>
+      <h4>
+        Email: info@vt-kungfu.de
+      </h4>
+      <h4>
+        Tel.: 0176-55377360
+      </h4>
+    </nb-card-body>
+  </nb-card>
+</ng-template>
