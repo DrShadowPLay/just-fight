@@ -1,0 +1,36 @@
+.header {
+  background-color: #000000;
+  padding: 0 24px;
+  height: 56px;
+
+}
+
+:host{
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.header-nav {
+  color: #fff;
+    display: inline-block;
+  line-height: 56px;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+}
+
+#buttonMenue{
+  margin-left: auto;
+
+
+}
+
+#sidebareButton{
+  margin-right: 7px;
+}
