@@ -1,15 +1,7 @@
-import {uebungen} from "./uebungen";
 import {db} from "./db";
-import {school} from "./school";
+import {trainingsGroup} from "../types/trainingsgroups-interface";
+import {uebungen} from "../types/uebungs-interface";
 
-
-export interface trainingsGroup {
-    trainingsGroup_id: number,
-    trainingsGroup_name: string,
-    trainingsGroup_difficulty: string,
-    trainingsGroup_duration: string
-    trainigsGroup_uebungen: uebungen[]
-}
 
 
 export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {

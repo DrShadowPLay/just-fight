@@ -1,18 +1,7 @@
 import {db} from "./db"
-import {uebungen} from "./uebungen";
-import {student} from "./student";
-import {getNextfreeIndexInTrainingsGroup, trainingsGroup} from "./trainingsgroups";
-import {school} from "./school";
-import {teacher} from "./teacher";
+import {trainingsplan} from "../types/trainingsplan-interface";
+import {uebungen} from "../types/uebungs-interface";
 
-export interface trainingsplan {
-    trainingsP_id: number,
-    student_id: number,
-    trainingsGroup_id: number,
-    trainingsplan_date: Date,
-    trainingsplan_time: string,
-    uebunge: uebungen[],
-}
 
 export function getOneTrainigsplan(trainigsP_id: number): Promise<trainingsplan> {
     return new Promise<trainingsplan>((resolve, reject) => {

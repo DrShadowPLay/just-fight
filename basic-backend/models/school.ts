@@ -1,14 +1,7 @@
 import {db} from "./db"
-import {teacher} from "./teacher";
-import {student} from "./student";
+import {school} from "../types/school-interface";
+import {teacher} from "../types/teacher-interface";
 
-export interface school {
-    school_id: number,
-    school_name: string,
-    school_place: string,
-    school_plz: number
-    teacher: teacher
-}
 
 export function getAllSchools(): Promise<school[]> {
     return new Promise<school[]>((resolve, reject) => {

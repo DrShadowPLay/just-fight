@@ -34,3 +34,12 @@
 #sidebareButton{
   margin-right: 7px;
 }
+
+
+finally, it is worked for me.
+
+in component.scss file
+
+.iconInHead{
+  font-size: 2rem;
+}

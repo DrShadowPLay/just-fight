@@ -1,18 +1,9 @@
 import {db} from "./db"
-import {student} from "./student";
-import {trainingsplan} from "./trainingsplan";
-import {uebungen} from "./uebungen";
-import {school} from "./school";
+import {teacher} from "../types/teacher-interface";
+import {student} from "../types/student-interface";
+import {trainingsplan} from "../types/trainingsplan-interface";
+import {uebungen} from "../types/uebungs-interface";
 
-export interface teacher {
-    teacher_id: number,
-    school_id: number,
-    teacher_name: string,
-    teacher_lastName: string,
-    teacher_mail: string,
-    teacher_telNumber: string,
-    students: student[]
-}
 
 
 export function getOneTeacher(teacher_id: number): Promise<teacher> {

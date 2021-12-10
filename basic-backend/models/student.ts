@@ -1,19 +1,10 @@
 import {db} from "./db";
-import {getTrainingsPlanFromStudent, trainingsplan} from "./trainingsplan";
-import {getAllUebungenFromTrainingsplan, uebungen} from "./uebungen";
-import {school} from "./school";
+import {getTrainingsPlanFromStudent} from "./trainingsplan";
+import {getAllUebungenFromTrainingsplan} from "./uebungen";
+import {student} from "../types/student-interface";
+import {uebungen} from "../types/uebungs-interface";
+import {trainingsplan} from "../types/trainingsplan-interface";
 
-
-export interface student {
-    student_id: number,
-    student_name: string,
-    student_lastName: string,
-    student_age: number,
-    student_lvl: number,
-    student_mail: string,
-    student_telNumber: number,
-    trainingsPlan: trainingsplan[]
-}
 
 
 export function getAllStudentsGenerell(): Promise<student[]> {

@@ -1,8 +1,8 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {
-  NbAccordionModule,
-  NbButtonModule,
+  NbAccordionModule, NbActionsModule,
+  NbButtonModule, NbCardModule,
   NbContextMenuModule, NbDialogModule,
   NbIconModule,
   NbMenuModule,
@@ -22,6 +22,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
 import {AccordionComponent} from "./core/sidebar/accordion/accordion.component";
 import {config} from "rxjs";
+import {SchoolPageComponent} from "./pages/school/school-page/school-page.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import {config} from "rxjs";
     PageNotFoundComponent,
     SidebarComponent,
     AccordionComponent,
-
+    SchoolPageComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +51,8 @@ import {config} from "rxjs";
     NbIconModule,
     NbButtonModule,
     NbDialogModule.forRoot(),
+    NbActionsModule,
+    NbCardModule,
   ],
   providers: [NbSidebarService],
   bootstrap: [AppComponent]

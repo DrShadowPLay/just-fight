@@ -7,14 +7,18 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./pages/welcome/welcome.module').then(m => m.WelcomeModule)
   },
+
+
   {
     path: '404',
     component: PageNotFoundComponent
   },
+
   {
     path: '**',
     redirectTo: '404'
-  }
+  },
+
 ];
 
 @NgModule({
@@ -23,3 +27,4 @@ const routes: Routes = [
 })
 export class AppRoutingModule {
 }
+

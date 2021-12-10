@@ -1,12 +1,6 @@
 import {db} from "./db";
-import * as process from "process";
-import {teacher} from "./teacher";
+import {uebungen} from "../types/uebungs-interface";
 
-export interface uebungen {
-    uebungs_id: number,
-    uebungs_beschreibung: string,
-    uebungsZeitInMin: number
-}
 
 export function getAllUebungen(): Promise<uebungen[]> {
     return new Promise<uebungen[]>((resolve, reject) => {
