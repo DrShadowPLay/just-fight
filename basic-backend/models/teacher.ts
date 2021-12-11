@@ -10,7 +10,6 @@ export function getOneTeacher(teacher_id: number): Promise<teacher> {
     return new Promise<teacher>((resolve, reject) => {
         db.get('SELECT * FROM Teacher WHERE  teacher_id =? ', [teacher_id], (err, teacherRow) => {
             if (err) {
-                console.log(err.message + " erro in getOneTeacher");
                 reject(err);
             } else if (teacherRow) {
                 let studentsFromTeacherArray: student[] = [];
@@ -23,7 +22,6 @@ export function getOneTeacher(teacher_id: number): Promise<teacher> {
                             db.all('SELECT * FROM TrainingsPlan WHERE student_id = ?', [studentRowElement.student_id], (err, trainingsPlanRow) => {
 
                                 if (err) {
-                                    console.log(err.message + " erro in getOneTeacher ");
                                     reject(err);
                                 } else if (trainingsPlanRow && trainingsPlanRow[0]) {
                                     let uebungenArray: uebungen[] = [];
@@ -101,27 +99,21 @@ export function getAllTeachers(): Promise<teacher[]> {
         let teachersArray: teacher[] = [];
         db.all('SELECT * FROM  Teacher', (err, teacherRow) => {
             if (err) {
-                console.log(err.message + " Erro getAllTeachers");
                 reject(err);
             } else if (teacherRow && teacherRow[0]) {
-                console.log("in in teacher Row " + teacherRow);
                 anzahlteacher = teacherRow.length;
                 let couter: number = 0;
                 let studetsInTeacherArray: student[] = [];
                 for (const teacherRowElement of teacherRow) {
-                    console.log("counter anzahl " + couter + " anzahlteacher " + anzahlteacher + "bevore db.all");
                     db.all('SELECT s.* from Student s , TeachStu t WHERE  s.student_id = t.student_id AND t.teacher_id =? ;', [teacherRowElement.teacher_id], (err, studentRow) => {
                         couter = couter + 1;
-                        console.log("counter anzahl " + couter + " anzahlteacher " + anzahlteacher);
                         if (err) {
-                            console.log(err.message + " erro in getAllTeachers studentRow ")
                             reject(err);
                         } else if (studentRow) {
                             let trianingsPlanArray: trainingsplan[] = [];
                             for (const studentRowElement of studentRow) {
                                 db.all('SELECT * FROM TrainingsPlan WHERE trainingsP_id =?;' [studentRowElement.trainingsP_id], (err, trainigsPlanRow) => {
                                     if (err) {
-                                        console.log(err.message + "  ERRO in getAllTeachers, from trainigsPlanRow ");
                                         reject(err);
                                     } else if (trainigsPlanRow && trainigsPlanRow[0]) {
                                         let uebungsArray: uebungen[] = [];
@@ -177,9 +169,7 @@ export function getAllTeachers(): Promise<teacher[]> {
                                 students: studetsInTeacherArray
                             }
                             teachersArray.push(thisTeacher);
-                            console.log(teachersArray)
                             if (couter == anzahlteacher) {
-                                console.log(teachersArray);
                                 resolve(teachersArray);
 
                             }
@@ -188,7 +178,6 @@ export function getAllTeachers(): Promise<teacher[]> {
                     });
 
                 }
-                console.log(teachersArray + " 1");
 
             } else {
                 resolve(teachersArray);
@@ -200,20 +189,15 @@ export function getAllTeachers(): Promise<teacher[]> {
 }
 
 export function getOneTeacherFromSchool(school_id: number ,teacher_id:number): Promise<teacher> {
-    console.log("school id " + school_id);
     return new Promise<teacher>((resolve, reject) => {
         db.all('SELECT * FROM Teacher WHERE school_id = ? AND teacher_id = ?;', [school_id ,teacher_id], (err, teacherRow) => {
-            console.log(teacherRow)
 
             if (err) {
-                console.log(err.message + " Erro in getOneTeacherFromSchool!!!");
                 reject(err);
             } else if (teacherRow && teacherRow[0]) {
-                console.log("in teacherRow[0]");
                 let studentsOfTeacher: student[] = [];
                 db.all('SELECT s.* From Student s, TeachStu t WHERE s.student_id = t.student_id AND t.teacher_id = ? ;', [teacherRow[0].teacher_id], (err, studentRows) => {
                     if (err) {
-                        console.log(err.message + " errro in getOneTeacherFromSchool");
                         reject(err);
                     } else if (studentRows) {
                         let trainingsPlanArray: trainingsplan[] = [];
@@ -221,7 +205,6 @@ export function getOneTeacherFromSchool(school_id: number ,teacher_id:number): P
                         for (const studentRowElemt of studentRows) {
                             db.all('SELECT * FROM TrainingsP WHERE student_id  =?', [studentRowElemt.student_id], (err, trainingsPlanRow) => {
                                 if (err) {
-                                    console.log(err.message + " erro in getOneTeacherFromSchool trainingsPlanRow");
                                     reject(err);
                                 } else if (trainingsPlanRow && trainingsPlanRow[0]) {
                                     let uebungsArray : uebungen[] =[];
@@ -285,13 +268,10 @@ export function getOneTeacherFromSchool(school_id: number ,teacher_id:number): P
 
 
 export async function addOneTeacherToschoool(school_id: number, teacher_name: string, teacherlastName: string, teacher_mail: string, teacher_telNumber: string) {
-    console.log("one Teacher");
     db.run('INSERT INTO Teacher(teacher_id, school_id, teacher_name, teacher_lastName, teacher_mail, teacher_telNumber) VALUES (?,?,?,?,?,?);', [getNextfreeIndexOfTeacher(await getAllTeachers()), school_id, teacher_name, teacherlastName, teacher_mail, teacher_telNumber], (err) => {
         if (err) {
-            console.log(err.message + "erro in addOneTeacherToschoool");
+            console.log(err.message);
         } else {
-            console.log(teacher_mail)
-            console.log("teacher addet to school");
         }
     });
 }

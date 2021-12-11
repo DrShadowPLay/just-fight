@@ -1,10 +1,48 @@
-<button id="sidebareButton"  nbButton hero status="info" outline  size="medium" (click)="toggle()">
+<button id="sidebareButton" nbButton hero status="info" outline size="medium" (click)="toggle()">
   <nb-icon calss="iconInHead" icon="list-outline"></nb-icon>
 </button>
-<a routerLink=""><button nbButton  hero status="info" outline size="medium">
-  <nb-icon calss="iconInHead" icon="home-outline"></nb-icon>
-</button></a>
+<a routerLink="">
+  <button nbButton hero status="info" outline size="medium">
+    <nb-icon calss="iconInHead" icon="home-outline"></nb-icon>
+  </button>
+</a>
+<button (click)="opendialog(addTeacherTemplate)" nbButton outline heros status="success" size="medium"
+        id="addTeacherButton">
+  <nb-icon icon="person-add-outline"></nb-icon>
+</button>
 
-<button id="buttonMenue" outline hero status="info" nbButton outline  size="medium" [nbContextMenu]="items">
+<button (click)="opendialog(addSchoolTemplate)" nbButton outline heros status="success" size="medium"
+        id="addSchoolsButton">
+  <nb-icon icon="plus-square-outline"></nb-icon>
+</button>
+
+<button id="buttonMenue" outline hero status="info" nbButton outline size="medium" [nbContextMenu]="items">
   <nb-icon calss="iconInHead" icon="person-outline"></nb-icon>
 </button>
+
+
+<ng-template #addTeacherTemplate let-ref="dialogRef">
+  <form [formGroup]="addTeacherForm" (ngSubmit)="addTeacher()">
+    <input formControlName="school_idInput" id="school_id" nbInput>
+    <input formControlName="nameInput"  id ="name" nbInput>
+    <input formControlName="lastNameInput"  id="lastName" nbInput>
+    <input formControlName="emailInput"  id="mail" nbInput>
+    <input formControlName="telNrInput"  id="telNr" nbInput>
+    <button nbButton outline hero status="success" type="submit">
+      Submit
+      <nb-icon icon="done-all-outline"></nb-icon>
+    </button>>
+  </form>
+</ng-template>
+
+<ng-template #addSchoolTemplate let-ref="dialogRef">
+  <form [formGroup]="addSchoolForm" (ngSubmit)="addSchool()">
+    <input formControlName="school_nameInput" id="school_name" nbInput>
+    <input formControlName="school_placeInput"  id ="school_place" nbInput>
+    <input formControlName="school_plzInput"  id="school_plz" nbInput>
+    <button nbButton outline hero status="success" type="submit">
+      Submit
+      <nb-icon icon="done-all-outline"></nb-icon>
+    </button>>
+  </form>
+</ng-template>

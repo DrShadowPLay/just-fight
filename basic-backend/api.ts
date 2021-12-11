@@ -6,8 +6,11 @@ import {trainingsPlanRouter} from "./controllers/trainingsPlanController";
 import {studentRouter} from "./controllers/studentController";
 import {teacherRouter} from "./controllers/teacherController";
 import {uebungsRouter} from "./controllers/uebungenController";
+import cors from 'cors';
+
 
 let router = express.Router();
+router.use(cors());
 router.use(logger.logToConsole);
 router.use(express.json());
 router.use('/school', schoolRouter);

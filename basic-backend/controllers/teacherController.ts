@@ -11,8 +11,8 @@ import {getAllStudentsFromSchool} from "../models/student";
 const router = express.Router();
 
 router.post('/', (req: any, res: any) => { //done
-    console.log(req.school_id);
     if (req.school_id) {
+        //console.log(req);
         addOneTeacherToschoool(req.school_id, req.body.teacher_name, req.body.teacher_lastName, req.body.teacher_mail, req.body.teacher_telNumber).then(teacher =>{
             res.status(200).send(teacher);
 
@@ -44,7 +44,6 @@ router.get('/:teacher_id', ((req: any, res: any) => { //done
             res.status(404).send(err.message, +err);
         });
     } else {
-        console.log("get teacher ealse"+ req.params.teacher_id);
         getOneTeacher(req.params.teacher_id).then(teacher => { // done
             res.status(200).send(teacher);
         }).catch(err => {

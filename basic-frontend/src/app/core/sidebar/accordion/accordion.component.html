@@ -8,12 +8,12 @@
       <nb-icon icon="globe-2-outline" style="margin-right: 5px"></nb-icon>
       Alle Schulen
     </nb-accordion-item-body>
-    <nb-accordion-item-body>
-      Schule eins
+    <nb-accordion-item-body >
+      <a href="https://vt-leonberg.de/" style="color: white; text-decoration-line: none"> Leonberg </a>
     </nb-accordion-item-body>
-    <nb-accordion-item-body>
-      Schulen zwei
-    </nb-accordion-item-body>
+    <nb-accordion-item-body *ngFor="let school of schoolArray" >
+      {{school.school_name}}
+    </nb-accordion-item-body >
   </nb-accordion-item>
   <nb-accordion-item>
     <nb-accordion-item-header>
@@ -24,14 +24,13 @@
       <nb-icon icon="people-outline" style="margin-right: 5px"></nb-icon>
       Alle Trainer
     </nb-accordion-item-body>
-    <nb-accordion-item-body>
+    <nb-accordion-item-body *ngFor="let teacher of teacherArray">
       <nb-icon icon="smiling-face-outline" style="margin-right: 5px"></nb-icon>
-      TRainer 1
+      {{teacher.teacher_name}}
     </nb-accordion-item-body>
-    <nb-accordion-item-body>
-      <nb-icon icon="smiling-face-outline" style="margin-right: 5px"></nb-icon>
-      Trainer 2
-    </nb-accordion-item-body>
+
+
+
   </nb-accordion-item>
   <nb-accordion-item>
     <nb-accordion-item-header>
@@ -42,11 +41,11 @@
       <nb-icon icon="shield-outline" style="margin-right: 5px"></nb-icon>
       Ving-Tsun Generell
     </nb-accordion-item-body>
-    <nb-accordion-item-body>
+    <nb-accordion-item-body routerLink="/yip-man">
       Yip Man
     </nb-accordion-item-body>
-    <nb-accordion-item-body>
-      Wong Shuen Leunge
+    <nb-accordion-item-body routerLink="/wong-shun-leugn">
+      Wong Shun Leungn
     </nb-accordion-item-body>
   </nb-accordion-item>
   <nb-accordion-item>
@@ -54,19 +53,23 @@
       <nb-icon  class="iconInHead" icon="info-outline" style="margin-right: 5px"></nb-icon>
       <h6>Infos</h6>
     </nb-accordion-item-header>
-    <nb-accordion-item-body>
-      <nb-icon icon="info-outline" style="margin-right: 5px"></nb-icon>
-      Termine
-    </nb-accordion-item-body>
     <nb-accordion-item-body routerLink="/info">
       <nb-icon icon="info-outline" style="margin-right: 5px"></nb-icon>
+      Allgemine Infos
+    </nb-accordion-item-body>
+    <nb-accordion-item-body>
+      <nb-icon icon="clock-outline" style="margin-right: 5px"></nb-icon>
+      Trainingszeiten
+    </nb-accordion-item-body>
+    <nb-accordion-item-body routerLink="/kosten">
+      <nb-icon icon="shopping-cart-outline" style="margin-right: 5px"></nb-icon>
       Kosten
     </nb-accordion-item-body>
   </nb-accordion-item>
   <nb-accordion-item>
     <nb-accordion-item-header>
      <nb-icon class="iconInHead" icon="archive-outline"  style="margin-right: 5px;"></nb-icon>
-      <h6>Archiev  </h6>
+      <h6>Archiv  </h6>
     </nb-accordion-item-header>
 
     <nb-accordion-item-body>

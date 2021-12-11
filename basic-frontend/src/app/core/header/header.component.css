@@ -31,14 +31,16 @@
 
 }
 
+#addTeacherButton{
+  margin-right: 7px;
+  margin-left: 7px;
+}
+
 #sidebareButton{
   margin-right: 7px;
 }
 
 
-finally, it is worked for me.
-
-in component.scss file
 
 .iconInHead{
   font-size: 2rem;
