@@ -1,2 +1,22 @@
 
 <img id="logo" style="alignment: center" src="http://vt-kungfu.de/Bilder/logo_justfight.jpg" width="50%">
+<br>
+<br>
+<nb-accordion accent="info" >
+  <nb-accordion-item *ngIf="studentArray.length > 0">
+    <nb-accordion-item-header>
+      Alle Studenten Der Schule
+    </nb-accordion-item-header >
+    <nb-accordion-item-body  *ngFor="let student of studentArray">
+      <nb-card>
+        <nb-card-header> {{student.student_name + " " + student.student_lastName }}</nb-card-header>
+        <nb-card-body>
+          {{student.student_age}} <br>
+          {{student.student_lvl}} <br>
+          {{student.student_mail}} <br>
+          {{student.student_telNumber}}<br>
+        </nb-card-body>
+      </nb-card>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>

@@ -42,8 +42,8 @@ router.post('/:student_id', (req: any, res: any) => {// done
 
 router.get('/', (_req: any, res: any) => { //done
     if (_req.school_id || _req.teacher_id) {
-        console.log(_req.school_id);
         getAllStudentsFromSchool(_req.school_id).then(students => {
+            console.log(students)
             res.status(200).send(students);
         }).catch(err => {
             res.status(400).send(err);

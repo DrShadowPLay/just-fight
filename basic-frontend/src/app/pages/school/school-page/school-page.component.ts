@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {StudentService} from "../../../core/services/student.service";
+import {student} from "../../../types/student-interface";
 
 @Component({
   selector: 'app-school-page',
@@ -7,9 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SchoolPageComponent implements OnInit {
 
-  constructor() { }
+  studentArray: student[] =[];
+  constructor(private studentService: StudentService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.studentService.getAllStudnets().subscribe(schoolArray=>{
+      this.studentArray = schoolArray;
+    }, error => {
+      console.log(error.message);
+    });
+
   }
 
 }

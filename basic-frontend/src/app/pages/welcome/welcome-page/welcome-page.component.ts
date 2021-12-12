@@ -1,5 +1,4 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {ApiService} from "../../../core/services/api.service";
 import {NbDialogService} from "@nebular/theme";
 
 @Component({
@@ -13,7 +12,7 @@ export class WelcomePageComponent implements OnInit {
   filterInput: string;
 
 
-  constructor(private apiService: ApiService ,private dialogService: NbDialogService) {
+  constructor(private dialogService: NbDialogService) {
   }
 
 

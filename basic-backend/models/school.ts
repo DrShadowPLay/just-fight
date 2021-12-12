@@ -19,7 +19,7 @@ export function getAllSchools(): Promise<school[]> {
                 let counter: number = 0;
                 for (const schoolRowElement of schoolRows) {
                     db.all('SELECT * FROM Teacher WHERE  school_id = ?', [schoolRowElement.school_id], (err, teacherRow) => {
-                        counter = counter +1;
+                        counter = counter + 1;
                         if (err) {
                             console.log(err.message + "getAllSchools  teacherRow");
                             reject(err);
@@ -61,8 +61,7 @@ export function getAllSchools(): Promise<school[]> {
 
                 }
 
-            }
-            else {
+            } else {
                 resolve(schoolArray)
             }
         });
@@ -131,8 +130,11 @@ export async function addSchool(school_name: string, school_place: string, schoo
 export function deleteSchool(school_id: number) {
     db.run('DELETE FROM School WHERE school_id = ?', [school_id], (err) => {
         if (err) {
-            console.log(err.message + " erro in  deleteSchool");
         } else {
+            db.run('DELETE FROM SchoStud WHERE school_id =? ', [school_id], (err => {
+                if(err){
+                }
+            }));
             console.log("school deleted");
         }
     });
@@ -140,13 +142,15 @@ export function deleteSchool(school_id: number) {
 
 
 export function getNextfreeIndexOfSchool(array: school[]): number {
-    array.sort(function (a, b){return a.school_id - b.school_id;});
+    array.sort(function (a, b) {
+        return a.school_id - b.school_id;
+    });
 
 
     for (let index = 0; index < array.length; index++) {
-            if (array[index].school_id != index){
-                return index;
-            }
+        if (array[index].school_id != index) {
+            return index;
+        }
     }
 
     return array.length;

@@ -1,7 +1,7 @@
 <button id="sidebareButton" nbButton hero status="info" outline size="medium" (click)="toggle()">
   <nb-icon calss="iconInHead" icon="list-outline"></nb-icon>
 </button>
-<a routerLink="">
+<a routerLink="/welcome">
   <button nbButton hero status="info" outline size="medium">
     <nb-icon calss="iconInHead" icon="home-outline"></nb-icon>
   </button>
@@ -11,19 +11,32 @@
   <nb-icon icon="person-add-outline"></nb-icon>
 </button>
 
+<button (click)="opendialog(addStudentTemplate)" nbButton outline heros status="success" size="medium"
+        id="addStudent">
+  <nb-icon icon="thermometer-plus-outline"></nb-icon>
+</button>
+
+
 <button (click)="opendialog(addSchoolTemplate)" nbButton outline heros status="success" size="medium"
         id="addSchoolsButton">
   <nb-icon icon="plus-square-outline"></nb-icon>
 </button>
 
-<button id="buttonMenue" outline hero status="info" nbButton outline size="medium" [nbContextMenu]="items">
+<button id="buttonMenue" nbButton  hero status="info"  outline size="medium" [nbContextMenu]="items">
   <nb-icon calss="iconInHead" icon="person-outline"></nb-icon>
 </button>
 
 
+
+
 <ng-template #addTeacherTemplate let-ref="dialogRef">
   <form [formGroup]="addTeacherForm" (ngSubmit)="addTeacher()">
-    <input formControlName="school_idInput" id="school_id" nbInput>
+    <nb-select formControlName="school_idInput"  id="school_id" placeholder="Schulname">
+      <nb-option  [value]="school.school_id" *ngFor="let school of schoolArray">
+        {{school.school_name}}
+      </nb-option>
+    </nb-select>
+    <!-- <input formControlName="school_idInput" id="school_id" nbInput> -->
     <input formControlName="nameInput"  id ="name" nbInput>
     <input formControlName="lastNameInput"  id="lastName" nbInput>
     <input formControlName="emailInput"  id="mail" nbInput>
@@ -40,6 +53,22 @@
     <input formControlName="school_nameInput" id="school_name" nbInput>
     <input formControlName="school_placeInput"  id ="school_place" nbInput>
     <input formControlName="school_plzInput"  id="school_plz" nbInput>
+    <button nbButton outline hero status="success" type="submit">
+      Submit
+      <nb-icon icon="done-all-outline"></nb-icon>
+    </button>>
+  </form>
+</ng-template>
+
+
+<ng-template #addStudentTemplate let-ref="dialogRef">
+  <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()">
+    <input formControlName="student_nameInput" id ="student_name" nbInput>
+    <input formControlName="student_lastNameInput" id ="student_lastName" nbInput>
+    <input formControlName="student_ageInput" id ="student_age" nbInput>
+    <input formControlName="student_lvlInput" id ="student_lvl" nbInput>
+    <input formControlName="student_mailInput" id ="student_mail" nbInput>
+    <input formControlName="student_telNumberInput" id ="student_telNumber" nbInput>
     <button nbButton outline hero status="success" type="submit">
       Submit
       <nb-icon icon="done-all-outline"></nb-icon>

@@ -50,7 +50,7 @@ addSchool(req.body.school_name, req.body.school_place, req.body.school_plz).then
 router.delete('/:school_id', (req:any, res:any) =>{//done
     console.log(req.params.school_id);
    deleteSchool(req.params.school_id);
-    res.status(200).send("geloescht");
+    res.status(200).send();
 });
 
 export {router as schoolRouter};

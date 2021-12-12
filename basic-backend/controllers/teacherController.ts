@@ -56,10 +56,10 @@ router.get('/:teacher_id', ((req: any, res: any) => { //done
 router.delete('/:teacher_id', (req: any, res: any) => { //done
     if (req.school_id) {
         deleteTeacherFromSchool(req.params.teacher_id, req.school_id);
-        res.status(200).send("teacher deletet");
+        res.status(200).send();
     } else { //done
         delteTeacherGenerell(req.params.teacher_id);
-        res.status(200).send("teacher geloescht");
+        res.status(200).send();
     }
 
 });

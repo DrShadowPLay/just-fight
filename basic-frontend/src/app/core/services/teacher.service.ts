@@ -23,7 +23,7 @@ export class TeacherService {
     });
     */
 
-    return this.http.get<teacher[]>('http://localhost:3000/api/teacher')
+    return this.http.get<teacher[]>('http://localhost:3000/api/teacher');
 
   }
 
@@ -46,6 +46,11 @@ export class TeacherService {
 
      */
     return this.http.post<void>(`http://localhost:3000/api/school/${thisTeacher.school_id}/teacher`, thisTeacher)
+  }
+
+  deleteOneTeacher(teacher_id: string):Observable<void>{
+    console.log(teacher_id)
+    return this.http.delete<void>(`http://localhost:3000/api/teacher/${teacher_id}`);
   }
 
 }

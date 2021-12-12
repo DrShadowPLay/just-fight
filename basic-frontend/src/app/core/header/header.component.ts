@@ -1,10 +1,12 @@
 import {Component, HostBinding, OnInit, TemplateRef} from '@angular/core';
-import {NbDialogService, NbSidebarService} from "@nebular/theme";
+import {NbDialogService, NbFormFieldComponent, NbSidebarService} from "@nebular/theme";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {teacher} from "../../types/teacher-interface";
 import {TeacherService} from "../services/teacher.service";
 import {SchoolService} from "../services/school.service";
 import {school} from "../../types/school-interface";
+import {student} from "../../types/student-interface";
+import {StudentService} from "../services/student.service";
 
 @Component({
   selector: 'app-header',
@@ -14,6 +16,17 @@ import {school} from "../../types/school-interface";
 export class HeaderComponent implements OnInit {
   fromInvalid: boolean = false;
   formSubmitted: boolean = false;
+  teacherArray: teacher[] = [];
+  schoolArray: school[]  =[];
+
+addStudentForm: FormGroup =new FormGroup({
+  student_nameInput: new FormControl(),
+  student_lastNameInput: new FormControl(),
+  student_ageInput: new FormControl(),
+  student_lvlInput: new FormControl(),
+  student_mailInput: new FormControl(),
+  student_telNumberInput:new FormControl()
+});
 
   addSchoolForm: FormGroup = new FormGroup({
     school_idInput: new FormControl(),
@@ -31,7 +44,7 @@ export class HeaderComponent implements OnInit {
 
   });
 
-  constructor(private sidebarService: NbSidebarService, private dialogService: NbDialogService, private formBuilder: FormBuilder , private teacherService: TeacherService, private schoolService : SchoolService) {
+  constructor( private sidebarService: NbSidebarService, private dialogService: NbDialogService, private formBuilder: FormBuilder , private teacherService: TeacherService, private schoolService : SchoolService, private studentService: StudentService) {
   }
 
   ngOnInit(): void {
@@ -48,6 +61,7 @@ export class HeaderComponent implements OnInit {
       emailInput: [null, [Validators.required, Validators.email]],
       telNrInput: [null]
     });
+    this.getSchools();
 
 
   }
@@ -58,6 +72,34 @@ export class HeaderComponent implements OnInit {
 
   opendialog(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog);
+  }
+
+  async addStudent(){
+    this.formSubmitted =true;
+    if (this.addStudentForm.invalid){
+      this.fromInvalid =true;
+      return;
+    }
+    else {
+      const thisStudent: student ={
+        student_id: 0,
+        student_name: this.addStudentForm.value.student_nameInput,
+        student_lastName: this.addStudentForm.value.student_nameInput,
+        student_age: this.addStudentForm.value.student_ageInput,
+        student_lvl: this.addStudentForm.value.student_lvlInput,
+        student_mail: this.addStudentForm.value.student_mailInput,
+        student_telNumber: this.addStudentForm.value.student_telNumberInput,
+        trainingsPlan: []
+
+      }
+      this.studentService.addStudent(thisStudent).subscribe(()=>{}, error => {
+        console.log(error.message);
+      });
+      this.fromInvalid =false;
+      this.formSubmitted = false;
+      window.location.reload();
+
+    }
   }
 
   async addSchool(){
@@ -110,6 +152,24 @@ export class HeaderComponent implements OnInit {
       window.location.reload();
     }
   }
+
+  getTeachers(){
+    this.teacherService.geteachers().subscribe(teacherArry=>{
+      this.teacherArray = teacherArry;
+    },error => {
+      console.log(error.message);
+    })
+  }
+
+  getSchools(){
+    this.schoolService.getSchools().subscribe(schoolarray=>{
+      console.log("in schools")
+      this.schoolArray = schoolarray;
+    },error => {
+      console.log(error.message);
+    })
+  }
+
 
 
 

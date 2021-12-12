@@ -172,11 +172,13 @@ export function getOneStudentFromSchool(school_id: number, student_id: number): 
 
 
 export function getAllStudentsFromSchool(school_id: number): Promise<student[]> {
+    console.log(school_id)
     return new Promise<student[]>((resolve, reject) => {
         let thisStudentArrray: student[] = [];
         let counter: number = 0;
         let anzahlStudents: number = 0;
-        db.all('SELECT s.* FROM Student s , SchoStud st WHERE s.student_id = st.student_id AND  st.school_id =?', (err, studentRow) => {
+        db.all('SELECT s.* FROM Student s , SchoStud st WHERE s.student_id = st.student_id AND  st.school_id =?',[school_id], (err, studentRow) => {
+            console.log(studentRow)
             if (err) {
                 console.log(" erro in getAllStudentsGenerell ");
                 reject(err);
@@ -240,6 +242,7 @@ export function getAllStudentsFromSchool(school_id: number): Promise<student[]> 
                 }
             }
             else {
+
                 resolve(thisStudentArrray);
             }
         });
@@ -259,13 +262,22 @@ export async function addOneStudent(student_name: string, student_lastName: stri
 }
 
 export async function addOneStudentToSchool(school_id: number, student_id: number) {
-    db.run('INSERT INTO SchoStud(school_id, student_id) VALUES (?,?);', [school_id, student_id], (err) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("schueler zu schule geadeet");
+    db.get('SELECT * FROM Student WHERE student_id = ?', [student_id] , (err, row) =>{
+        if (err){
+            console.log(err.message);
         }
+        else if (row){
+            db.run('INSERT INTO SchoStud(school_id, student_id) VALUES (?,?);', [school_id, student_id], (err) => {
+                if (err) {
+                    console.log(err);
+                } else {
+
+                }
+            });
+        }
+
     });
+
 }
 
 export async function addOneStudentToTeacher(teacher_id: number, student_id: number) {

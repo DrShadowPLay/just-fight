@@ -5,7 +5,7 @@ import {
   NbButtonModule, NbCardModule,
   NbContextMenuModule, NbDialogModule,
   NbIconModule, NbInputModule,
-  NbMenuModule,
+  NbMenuModule, NbSelectModule,
   NbSidebarService
 } from '@nebular/theme';
 import {AppRoutingModule} from './app-routing.module';
@@ -21,12 +21,12 @@ import {NbThemeModule, NbLayoutModule, NbSidebarModule} from '@nebular/theme';
 import {NbEvaIconsModule} from '@nebular/eva-icons';
 import {SidebarComponent} from './core/sidebar/sidebar.component';
 import {AccordionComponent} from "./core/sidebar/accordion/accordion.component";
-import {config} from "rxjs";
-import {SchoolPageComponent} from "./pages/school/school-page/school-page.component";
 import {VingTsunPageComponent} from "./pages/ving-tsun/ving-tsun-page/ving-tsun-page.component";
 import {YipManPageComponent} from "./pages/ving-tsun/yip-man-page/yip-man-page.component";
 import {WongShunLeungPageComponent} from "./pages/ving-tsun/wong-shun-leung-page/wong-shun-leung-page.component";
 import {KostenPageComponent} from "./pages/infos/kosten-page/kosten-page.component";
+import {SchoolService} from "./core/services/school.service";
+import {StudentService} from './core/services/student.service';
 
 @NgModule({
   declarations: [
@@ -36,11 +36,10 @@ import {KostenPageComponent} from "./pages/infos/kosten-page/kosten-page.compone
     PageNotFoundComponent,
     SidebarComponent,
     AccordionComponent,
-    SchoolPageComponent,
     VingTsunPageComponent,
     YipManPageComponent,
     WongShunLeungPageComponent,
-    KostenPageComponent
+    KostenPageComponent,
   ],
   imports: [
     CommonModule,
@@ -63,8 +62,10 @@ import {KostenPageComponent} from "./pages/infos/kosten-page/kosten-page.compone
     NbCardModule,
     NbInputModule,
     ReactiveFormsModule,
+    NbSelectModule,
+
   ],
-  providers: [NbSidebarService],
+  providers: [NbSidebarService, SchoolService, StudentService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

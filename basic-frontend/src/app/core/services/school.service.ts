@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import {school} from "../../types/school-interface";
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
   providedIn: 'root'
 })
 export class SchoolService {
+
+  schools: BehaviorSubject<school[]> = new BehaviorSubject<school[]>([]);
+
 
   constructor(private  http:HttpClient) { }
   getSchools():Observable<school[]>{
@@ -25,8 +28,17 @@ export class SchoolService {
     return this.http.get<school[]>('http://localhost:3000/api/school')
   }
 
+  getOneSchool(school_id: string):Observable<school>{
+    return  this.http.get<school>(`http://localhost:3000/api/school/${school_id}`);
+  }
+
   addSchools(thisSchool : school):Observable<void>{
     return this.http.post<void>('http://localhost:3000/api/school', thisSchool);
+  }
+
+  deleteOneSchool(school_id: string): Observable<void>{
+    return this.http.delete<void>(`http://localhost:3000/api/school/${school_id}`);
+
   }
 
 }
