@@ -17,7 +17,7 @@ export class AccordionComponent implements OnInit {
   schoolArray: school[] = [];
   teacherArray: teacher[] = [];
   school_id: string;
-  blub: string = "PENIS";
+  blub: string = "blub";
 
 
   constructor(private ref: ChangeDetectorRef, private schoolservice: SchoolService, private teacherservice: TeacherService, private router: Router, private ngZone: NgZone) {
@@ -49,7 +49,7 @@ export class AccordionComponent implements OnInit {
     console.log(teacher_id)
     this.teacherservice.deleteOneTeacher(teacher_id).subscribe(() => {
         this.router.navigate([
-          '/trainer'
+          '/teacher'
         ]).then(() => {
           this.getTeacher();
           this.ref.detectChanges();

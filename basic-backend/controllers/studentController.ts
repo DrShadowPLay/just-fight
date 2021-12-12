@@ -3,7 +3,7 @@ import {
     addOneStudent, addOneStudentToSchool, deleteOneStudentFromSchoool,
     deleteOneStudentGenerel, deleteStudentFromTrainingsplan,
     getAllStudentsFromSchool,
-    getAllStudentsGenerell,
+    getAllStudentsGenerell, getAllStudentsthereNotInThisSchool,
     getOneStudent, getOneStudentFromSchool
 } from "../models/student";
 import {trainingsPlanRouter} from "./trainingsPlanController";
@@ -39,6 +39,17 @@ router.post('/:student_id', (req: any, res: any) => {// done
     });
 
 });
+
+router.get('/get', ((req:any, res:any) =>{
+    console.log("in gets!!!!")
+
+    getAllStudentsthereNotInThisSchool(req.school_id).then(students=>{
+        console.log("in gets")
+        res.status(200).send(students);
+    }).catch(err=>{
+        res.status(400).send(err);
+    });
+} ))
 
 router.get('/', (_req: any, res: any) => { //done
     if (_req.school_id || _req.teacher_id) {
@@ -79,15 +90,15 @@ router.get('/:student_id', (req: any, res: any) => { //done
 router.delete('/:student_id', (req: any, res: any) => { //done
     if (req.school_id) {
         deleteOneStudentFromSchoool(req.school_id, req.params.student_id);
-        res.status(200).send("studentGelöscht from school");
+        res.status(200).send();
 
     } else if (req.trainingsP_id) {
         deleteStudentFromTrainingsplan(req.params.student_id)
-        res.status(200).send("studentGelöscht from trainingsPlan");
+        res.status(200).send();
 
     } else {
         deleteOneStudentGenerel(req.params.student_id);
-        res.status(200).send("studentGelöscht");
+        res.status(200).send();
     }
 
 });

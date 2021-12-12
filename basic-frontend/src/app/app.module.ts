@@ -27,6 +27,8 @@ import {WongShunLeungPageComponent} from "./pages/ving-tsun/wong-shun-leung-page
 import {KostenPageComponent} from "./pages/infos/kosten-page/kosten-page.component";
 import {SchoolService} from "./core/services/school.service";
 import {StudentService} from './core/services/student.service';
+import {TrainingsPlanService} from "./core/services/trainings-plan.service";
+//import { PagesComponent } from './pages/pages.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import {StudentService} from './core/services/student.service';
     YipManPageComponent,
     WongShunLeungPageComponent,
     KostenPageComponent,
+    //PagesComponent,
   ],
   imports: [
     CommonModule,
@@ -65,7 +68,7 @@ import {StudentService} from './core/services/student.service';
     NbSelectModule,
 
   ],
-  providers: [NbSidebarService, SchoolService, StudentService],
+  providers: [NbSidebarService, SchoolService, StudentService, TrainingsPlanService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

@@ -1,5 +1,12 @@
-import {Component, HostBinding, OnInit, TemplateRef} from '@angular/core';
-import {NbDialogService, NbFormFieldComponent, NbSidebarService} from "@nebular/theme";
+import {Component, HostBinding, Inject, OnInit, TemplateRef} from '@angular/core';
+import {
+  NB_WINDOW,
+  NbDialogService,
+  NbFormFieldComponent, NbMenuBag,
+  NbMenuItem,
+  NbMenuService,
+  NbSidebarService
+} from "@nebular/theme";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {teacher} from "../../types/teacher-interface";
 import {TeacherService} from "../services/teacher.service";
@@ -7,6 +14,8 @@ import {SchoolService} from "../services/school.service";
 import {school} from "../../types/school-interface";
 import {student} from "../../types/student-interface";
 import {StudentService} from "../services/student.service";
+import {filter, map} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -44,10 +53,27 @@ addStudentForm: FormGroup =new FormGroup({
 
   });
 
-  constructor( private sidebarService: NbSidebarService, private dialogService: NbDialogService, private formBuilder: FormBuilder , private teacherService: TeacherService, private schoolService : SchoolService, private studentService: StudentService) {
+  constructor(private router: Router,private  menu: NbMenuService, @Inject(NB_WINDOW) private window: any, private sidebarService: NbSidebarService, private dialogService: NbDialogService, private formBuilder: FormBuilder , private teacherService: TeacherService, private schoolService : SchoolService, private studentService: StudentService) {
+
   }
 
   ngOnInit(): void {
+    this.menu.onItemClick().subscribe(
+      (item: NbMenuBag) => {
+        console.log(item);
+        if (item.item.data?.id === 'profile') {
+          this.router.navigate(['profile']);
+        }
+        else {
+          this.router.navigate(['logout']);
+        }
+      }
+    );
+    // pipe(
+    //   filter(({tag})=> tag === 'profile'),
+    //   map(({item: {title}})=>title),
+    // ).subscribe(titel => this.router.navigate(['profile']))
+
     this.addSchoolForm = this.formBuilder.group({
       school_nameInput:[null, [Validators.required]],
       school_placeInput:[null,[Validators.required]],
@@ -173,7 +199,6 @@ addStudentForm: FormGroup =new FormGroup({
 
 
 
-  items = [{title: 'Profile'}, {title: 'Log out'}];
-
+  items = [{title: 'Profile' , data:{id:'profile'}}, {title: 'Log out'}];
 }
 

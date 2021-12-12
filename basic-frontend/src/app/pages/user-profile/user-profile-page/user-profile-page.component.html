@@ -1,0 +1,64 @@
+<nb-card>
+  <nb-card-body>
+    <nb-select placeholder="Schulen" disabled ="false" (selectedChange)="getStudent($event)">
+      <nb-option  *ngFor="let school of schoolsArray" [value]="school.school_id">
+        {{school.school_name}}
+      </nb-option>
+    </nb-select>
+    <nb-select placeholder="Schüler" [disabled]="studentsInSchoolArray.length === 0" (selectedChange)="selectedStudent = studentsInSchoolArray[$event]; getTrainingsPlans(selectedStudent.student_id, selectedSchool.school_id)">
+      <nb-option  *ngFor="let student of studentsInSchoolArray" [value]="student.student_id">
+        {{student.student_name}} {{student.student_lastName}}
+      </nb-option>
+    </nb-select>
+
+  </nb-card-body>
+</nb-card>
+
+<nb-card *ngIf="selectedStudent">
+  <nb-card-header>
+    {{selectedStudent.student_name}} {{selectedStudent.student_lastName}}
+  </nb-card-header>
+  <nb-card-body>
+
+    Student Alter: {{selectedStudent.student_age}} <Br> <br>
+    Student Lvl: {{selectedStudent.student_lvl}}
+    Student mail: {{selectedStudent.student_mail}}
+    Student TelNr: {{selectedStudent.student_telNumber}}
+    <nb-card>
+      <nb-card-header>
+        Trainingsplan/s
+      </nb-card-header>
+      <nb-card-body>
+        <nb-accordion>
+          <nb-accordion-item *ngFor="let trainingsP of trainingsPArray">
+            <nb-accordion-item-header>
+              TrainingsPlan Nummer: {{trainingsP.trainingsP_id}}
+            </nb-accordion-item-header>
+            <nb-accordion-item-body>
+             <p *ngIf="trainingsP.trainingsGroup_id"> TRainingsGroup Nummer{{trainingsP.trainingsGroup_id}}</p>
+              <div *ngIf="trainingsP.trainingsplan_time">
+                Leider funktioniert die Date und Time Nicht von der Datenbank, vor dem Resolve ist es noch gesetzt dazischen Undifinde
+                <br>
+                TrainingsPlan Erstellt Am: {{trainingsP.trainingsplan_date}} <br> <br>
+                TrainingsPlan duration: {{trainingsP.trainingsplan_time}}
+              </div>
+              <nb-card>
+              <nb-card-header>
+                Übungen
+              </nb-card-header>
+                <nb-list>
+                  <nb-list-item *ngFor="let uebung of trainingsP.uebunge">
+                    ÜbungsNummer: {{uebung.uebungs_id}} <br> <br>
+                    Übungs dauer in Minuten: {{uebung.uebungsZeitInMin}} mins<br> <br>
+                    Übungsbeschreibung: {{uebung.uebungs_beschreibung}}
+                  </nb-list-item>
+                </nb-list>
+              </nb-card>
+            </nb-accordion-item-body>
+          </nb-accordion-item>
+        </nb-accordion>
+      </nb-card-body>
+    </nb-card>
+  </nb-card-body>
+
+</nb-card>

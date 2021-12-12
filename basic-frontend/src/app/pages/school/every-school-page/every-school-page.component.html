@@ -1,15 +1,34 @@
-
 <img id="logo" style="alignment: center" src="http://vt-kungfu.de/Bilder/logo_justfight.jpg" width="50%">
 <br>
 <br>
-<nb-accordion accent="info" >
+
+<nb-card>
+  <nb-card-header>
+
+    <H5> {{thisSchool.school_name}}</H5>
+  </nb-card-header>
+  <nb-card-body>
+   Platz der Schule:  {{thisSchool.school_place}} <br> <br>
+   Ort der Schule: {{thisSchool.school_plz}}
+  </nb-card-body>
+</nb-card>
+
+<button nbButton status="info" hero outline size="large" (click)="openDialog(addStudentsToSchoolTemplate)">
+  +
+</button>
+
+<nb-accordion accent="info">
   <nb-accordion-item *ngIf="studentArray.length > 0">
     <nb-accordion-item-header>
       Alle Studenten Der Schule
-    </nb-accordion-item-header >
-    <nb-accordion-item-body  *ngFor="let student of studentArray">
+    </nb-accordion-item-header>
+    <nb-accordion-item-body *ngFor="let student of studentArray">
       <nb-card>
-        <nb-card-header> {{student.student_name + " " + student.student_lastName }}</nb-card-header>
+        <nb-card-header>
+          {{student.student_name + " " + student.student_lastName }}
+          <button nbButton outline status="danger" hero
+                  (click)="deleteOneStudentFromSchool(student.student_id.toString(), thisSchool.school_id.toString())"></button>
+        </nb-card-header>
         <nb-card-body>
           {{student.student_age}} <br>
           {{student.student_lvl}} <br>
@@ -20,3 +39,14 @@
     </nb-accordion-item-body>
   </nb-accordion-item>
 </nb-accordion>
+
+
+<ng-template #addStudentsToSchoolTemplate let-ref= "dialogRef" nbCellOutlet >
+  <nb-select  fullWidth  placeholder=" Studenten die Sie dieser Schule adden Möchten"   shape="semi-round" >
+    <nb-option  [value]="thisStudent" *ngFor="let student of allStudentsArray"   >
+      {{student.student_name}} {{student.student_lastName}}
+      <button style="margin: 10px" nbButton hero outline status="control" size="tiny" (click)="addOneStudentToThisSchool(student, thisSchool.school_id.toString())"> Schüler Hinzufügen</button>
+    </nb-option>
+  </nb-select>
+</ng-template>
+

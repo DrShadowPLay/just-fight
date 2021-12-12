@@ -115,7 +115,11 @@ export function getTrainingsPlanFromStudent(student_id: number): Promise<trainin
                 let counter: number = 0;
                 let uebungenFromTrainingsPlan: uebungen[] = [];
                 for (const trainingsPlanRowElement of trainingsPlanRow) {
-                    db.all('SELECT u.uebungs_id, u.uebungs_beschreibung , u.uebungsZeitInMin  FROM Uebung u, TrP_Üb t WHERE u.uebungs_id = t.uebungs_id AND  t.trainingsP_id = ?; ', [trainingsPlanRow[0].trainingsP_id], (err, uebungsrow) => {
+
+
+                    console.log(trainingsPlanRowElement)
+
+                    db.all('SELECT u.uebungs_id, u.uebungs_beschreibung , u.uebungsZeitInMin  FROM Uebung u, TrP_Üb t WHERE u.uebungs_id = t.uebungs_id AND  t.trainingsP_id = ?; ', [trainingsPlanRowElement.trainingsP_id], (err, uebungsrow) => {
                         counter = counter + 1;
                         if (err) {
                             console.log(err.message + " Erro in  getTrainingsPlanFromStudent from  uebungsrow");
@@ -140,7 +144,6 @@ export function getTrainingsPlanFromStudent(student_id: number): Promise<trainin
 
                             trainingsPlanArray.push(thisTrainingsPlan);
                             if (counter == anzahlTrainingsPlaeneProStudent) {
-                                console.log(trainingsPlanArray);
                                 resolve(trainingsPlanArray)
                             }
 
@@ -156,7 +159,7 @@ export function getTrainingsPlanFromStudent(student_id: number): Promise<trainin
                             }
                             trainingsPlanArray.push(thisTrainingsPlan);
                             if (counter == anzahlTrainingsPlaeneProStudent) {
-                                console.log(trainingsPlanArray);
+                                console.log("test", trainingsPlanRowElement);
                                 resolve(trainingsPlanArray)
                             }
                         }
@@ -245,8 +248,8 @@ export function getTrainingsPlanFromTraininsGroup(trainingsGroup_id: number): Pr
 
 
 
-export async function addOneTrainingsPlanTostudent(student_id: number, trainingsPlan_date: Date, trainingsPlan_time: string) {
-    db.run('INSERT INTO TrainingsPlan(trainingsP_id , student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time) VALUES (?,?,NULL , ?,?);', [getNextfreeIndexOfTrainingsPlan(await getAllTrainigsplans()), student_id, trainingsPlan_date, trainingsPlan_time], (err) => {
+export async function addOneTrainingsPlanTostudent(trainingsP_id: number, student_id: number, trainingsPlan_date: Date, trainingsPlan_time: string) {
+    db.run('INSERT INTO TrainingsPlan(trainingsP_id , student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time) VALUES (?,?,NULL , ?,?);', [trainingsP_id, student_id, trainingsPlan_date, trainingsPlan_time], (err) => {
 
         if (err) {
             console.log(err.message + " erro in addOneTrainingsPlanTostudent");
@@ -257,20 +260,20 @@ export async function addOneTrainingsPlanTostudent(student_id: number, trainings
 
 }
 
-export async function addOneTrainingsPlanTostudentWithGroup(student_id: number, trainingsGroup_id: number, trainingsPlan_date: Date, trainingsPlan_time: string) {
-    db.run('INSERT INTO TrainingsPlan(trainingsP_id , student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time) VALUES (?,?,?,?,?);', [getNextfreeIndexOfTrainingsPlan(await getAllTrainigsplans()), student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time], (err) => {
-
+export async function addOneTrainingsPlanTostudentWithGroup( trainingsP_id:number, student_id: number) {
+    db.run('UPDATE  TrainingsPlan SET student_id =?  WHERE trainingsP_id =?', [student_id, trainingsP_id], (err)=>{
         if (err) {
             console.log(err.message + " erro in addOneTrainingsPlanTostudent");
         } else {
             console.log("addet Trainingsplan fro student");
         }
-    });
+    })
+
 
 }
 
-export async function addOneTrainingsPlantoTrainingsGroup(trainingsGroup_id: number, trainingsPlan_date: Date, trainingsPlan_time: string) {
-    db.run('INSERT INTO TrainingsPlan(trainingsP_id , student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time) VALUES (?,NULL ,?, ?,?);', [getNextfreeIndexOfTrainingsPlan(await getAllTrainigsplans()), trainingsGroup_id, trainingsPlan_date, trainingsPlan_time], (err) => {
+export async function addOneTrainingsPlantoTrainingsGroup( trainingsP_id: number , trainingsGroup_id: number, trainingsPlan_date: Date, trainingsPlan_time: string) {
+    db.run('INSERT INTO TrainingsPlan(trainingsP_id , student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time) VALUES (?,NULL ,?, ?,?);', [trainingsP_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time], (err) => {
         if (err) {
             console.log(err.message + " erro in addOneTrainingsPlanTostudent");
         } else {
@@ -281,20 +284,22 @@ export async function addOneTrainingsPlantoTrainingsGroup(trainingsGroup_id: num
 }
 
 
-export async function addOneTrainingsPlantoTrainingsGroupWithStudent(trainingsGroup_id: number, student_id:number , trainingsPlan_date: Date, trainingsPlan_time: string) {
-    db.run('INSERT INTO TrainingsPlan(trainingsP_id , student_id, trainingsGroup_id, trainingsPlan_date, trainingsPlan_time) VALUES (?,? ,?, ?,?);', [getNextfreeIndexOfTrainingsPlan(await getAllTrainigsplans()),student_id ,  trainingsGroup_id, trainingsPlan_date, trainingsPlan_time], (err) => {
+export async function addOneTrainingsPlantoTrainingsGroupWithStudent(trainingsP_id: number ,trainingsGroup_id: number) {
+    console.log(trainingsGroup_id + "trainingsgroupid");
+    console.log(trainingsP_id + "trainingsgroupid");
+
+    db.run('UPDATE  TrainingsPlan SET trainingsGroup_id =?  WHERE trainingsP_id =?', [trainingsGroup_id, trainingsP_id], (err)=>{
         if (err) {
             console.log(err.message + " erro in addOneTrainingsPlanTostudent");
         } else {
-            console.log("addet Trainingsplan fro group");
         }
-    });
+    })
+
 
 }
 
 
-export function addOneTrainingsPlanWithGroupToStudent() {
-}
+
 
 export function addOneTrainingsPlanFromstudentToGroup() {
 }

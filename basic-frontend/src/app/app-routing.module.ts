@@ -17,7 +17,7 @@ const routes: Routes = [
 
 
   {
-    path: 'trainer',
+    path: 'teacher',
     loadChildren: () => import("./pages/trainer/trainer.module").then(m => m.TrainerModule)
   },
 
@@ -50,6 +50,11 @@ const routes: Routes = [
   {
     path: 'ariev',
     loadChildren: () => import("./pages/archiev/archiev.module").then(m => m.ArchievModule)
+  },
+
+  {
+    path:'profile',
+    loadChildren:()=> import("./pages/user-profile/user-profile.module").then(m =>m.UserProfileModule)
   },
 
   {

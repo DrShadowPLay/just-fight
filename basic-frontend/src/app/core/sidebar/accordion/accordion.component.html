@@ -23,11 +23,11 @@
       <nb-icon class="iconInHead" icon="people-outline" style="margin-right: 5px"></nb-icon>
       <h6>Trainer</h6>
     </nb-accordion-item-header>
-    <nb-accordion-item-body routerLink="/trainer">
+    <nb-accordion-item-body routerLink="/teacher">
       <nb-icon icon="people-outline" style="margin-right: 5px"></nb-icon>
       Alle Trainer
     </nb-accordion-item-body>
-    <nb-accordion-item-body *ngFor="let teacher of teacherArray">
+    <nb-accordion-item-body *ngFor="let teacher of teacherArray" [routerLink]="['/teacher', teacher.teacher_id]">
       <nb-icon icon="smiling-face-outline" style="margin-right: 5px"></nb-icon>
       {{teacher.teacher_name}}
       <button  nbButton  hero status="danger"  outline size="small" (click)="deleteTeacher(teacher.teacher_id.toString())">

@@ -22,54 +22,46 @@ router.param('trainingsP_id', (req: express.Request, res:express.Response, next:
     req.trainingsP_id = trainingsP_id;
     next();
 });
-router.post('/', (req: any, res: any) => { //done
-    if (req.student_id) { //done
-        console.log("go to addOneTrainingsPlanTostudent ");
-        if(req.body.trainingsGroup_id){
-            addOneTrainingsPlanTostudentWithGroup(req.student_id, req.body.trainingsGroup_id,req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
-                res.status(200).send(trainingsPlan)
 
-            }).catch(err => {
-                res.status(404).send(err);
-            });
-        }
-        else{
-            addOneTrainingsPlanTostudent(req.student_id, req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
-                res.status(200).send(trainingsPlan)
-
-            }).catch(err => {
-                res.status(404).send(err);
-            });
-        }
-    } else if (req.trainingsGroup_id) {
-        if(req.body.student_id){
-            console.log("go to addOneTrainingsPlantoTrainingsGroup");
-            addOneTrainingsPlantoTrainingsGroupWithStudent(req.trainingsGroup_id,req.body.student_id,  req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
-                res.status(200).send(trainingsPlan)
-
-            }).catch(err => {
-                res.status(404).send(err);
-            });
-        }
-        else{
-            console.log("go to addOneTrainingsPlantoTrainingsGroup");
-            addOneTrainingsPlantoTrainingsGroup(req.trainingsGroup_id, req.body.trainingsplan_date, req.body.trainingsplan_time).then(trainingsPlan => {
-                res.status(200).send(trainingsPlan)
-
-            }).catch(err => {
-                res.status(404).send(err);
-            });
-        }
-
-    } else {
-        res.status(404).send("bad requst");
-    }
+router.post('/:trainingsP_id', (req: any, res: any) => { //done
+if(req.student_id){
+    addOneTrainingsPlanTostudent(req.params.trainingsP_id, req.student_id, req.body.trainingsplan_date, req.body.trainingsplan_time).then((trainingsp)=>{
+        res.status(200).send(trainingsp);
+    }).catch(err=>{
+        res.status(400).send(err.message);
+    });
+}
+if (req.trainingsGroup_id){
+    addOneTrainingsPlantoTrainingsGroup(req.params.trainingsP_id, req.trainingsGroup_id, req.body.trainingsplan_date, req.body.trainingsplan_time).then((trainingsp)=>{
+        res.status(200).send(trainingsp);
+    }).catch(err=>{
+        res.status(400).send(err.message);
+    });
+}
 });
+
+router.patch('/:trainingsP_id', ((req:any, res:any) => {
+    if(req.trainingsGroup_id){
+        addOneTrainingsPlanTostudentWithGroup(req.params.trainingsP_id, req.body.student_id ).then(trainingP=>{
+            res.status(200).send(trainingP)
+        },err=>{
+            res.status(400).send(err.message);
+        });
+    }
+    else if(req.student_id){
+        addOneTrainingsPlantoTrainingsGroupWithStudent(req.params.trainingsP_id, req.body.trainingsGroup_id).then(trainingP=>{
+            res.status(200).send(trainingP)
+        },err=>{
+            res.status(400).send(err.message);
+        });
+    }
+
+}))
 
 router.get('/', (req: any, res: any) => {//done
     if (req.student_id) {//done
-        console.log("get trainingsP from student");
         getTrainingsPlanFromStudent(req.student_id).then(trainingsPlans => {
+            console.log( trainingsPlans[trainingsPlans.length - 1])
             res.status(200).send(trainingsPlans);
 
         }).catch(err => {
