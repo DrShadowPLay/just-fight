@@ -40,16 +40,16 @@ router.post('/:student_id', (req: any, res: any) => {// done
 
 });
 
-router.get('/get', ((req:any, res:any) =>{
+router.get('/get', ((req: any, res: any) => {
     console.log("in gets!!!!")
 
-    getAllStudentsthereNotInThisSchool(req.school_id).then(students=>{
+    getAllStudentsthereNotInThisSchool(req.school_id).then(students => {
         console.log("in gets")
         res.status(200).send(students);
-    }).catch(err=>{
+    }).catch(err => {
         res.status(400).send(err);
     });
-} ))
+}))
 
 router.get('/', (_req: any, res: any) => { //done
     if (_req.school_id || _req.teacher_id) {

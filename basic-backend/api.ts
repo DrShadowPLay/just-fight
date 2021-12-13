@@ -17,8 +17,9 @@ router.use('/school', schoolRouter);
 router.use('/trainingsGroup', trainingsGroupRouter);
 router.use('/trainingsplan', trainingsPlanRouter);
 router.use('/student', studentRouter);
-router.use('/teacher',teacherRouter);
+router.use('/teacher', teacherRouter);
 router.use('/uebunge', uebungsRouter);
+
 router.use('/', (_req: express.Request, res: express.Response) => {
     res.status(200);
     res.send("start api!");

@@ -132,7 +132,7 @@ export function deleteSchool(school_id: number) {
         if (err) {
         } else {
             db.run('DELETE FROM SchoStud WHERE school_id =? ', [school_id], (err => {
-                if(err){
+                if (err) {
                 }
             }));
             console.log("school deleted");

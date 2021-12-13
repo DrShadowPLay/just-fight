@@ -3,7 +3,6 @@ import {trainingsGroup} from "../types/trainingsgroups-interface";
 import {uebungen} from "../types/uebungs-interface";
 
 
-
 export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {
     return new Promise<trainingsGroup[]>((resolve, reject) => {
         let trainingsGroupAnzahl: number = 0;
@@ -19,11 +18,11 @@ export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {
                 let uebungeninGroupArray: uebungen[] = [];
                 for (const trainingsGroupRowElement of trainingsGroupRow) {
                     db.all('SELECT u.uebungs_id, u.uebungs_beschreibung, u.uebungsZeitInMin FROM Uebung u , Uebgroup g WHERE  u.uebungs_id = g.uebungs_id AND g.trainingsGroup_id  = ? ;', [trainingsGroupRowElement.trainingsGroup_id], (err, uebungsRow) => {
-                        counter = counter+ 1;
+                        counter = counter + 1;
                         if (err) {
                             console.log(err.message + "erro in getAllTrainingsGroups  uebungeninGroupArray ");
                             reject(err);
-                        } else if(uebungsRow) {
+                        } else if (uebungsRow) {
                             for (const uebungsRowElemet of uebungsRow) {
                                 let thisUebung: uebungen = {
                                     uebungs_id: uebungsRowElemet.uebungs_id,
@@ -41,13 +40,12 @@ export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {
                                 trainigsGroup_uebungen: uebungeninGroupArray
                             }
                             trainingsGroupsArray.push(thisUebungsGroup);
-                            if(counter == trainingsGroupAnzahl){
+                            if (counter == trainingsGroupAnzahl) {
                                 console.log(trainingsGroupsArray);
                                 resolve(trainingsGroupsArray)
                             }
 
-                        }
-                        else {
+                        } else {
                             let thisUebungsGroup: trainingsGroup = {
                                 trainingsGroup_id: trainingsGroupRowElement.trainingsGroup_id,
                                 trainingsGroup_name: trainingsGroupRowElement.trainingsGroup_name,
@@ -56,7 +54,7 @@ export function getAllTrainingsGroups(): Promise<trainingsGroup[]> {
                                 trainigsGroup_uebungen: uebungeninGroupArray
                             }
                             trainingsGroupsArray.push(thisUebungsGroup);
-                            if(counter == trainingsGroupAnzahl){
+                            if (counter == trainingsGroupAnzahl) {
                                 console.log(trainingsGroupsArray);
                                 resolve(trainingsGroupsArray)
                             }
@@ -122,7 +120,7 @@ export function getOneTrainierGroup(trainingsGroup_id: number): Promise<training
 
 
 export async function addTrainingsGroup(trainingsGroup_name: string, trainingsGroup_difficulty: string, trainingsGroup_duration: string) {
-    db.run('INSERT INTO TrainingsGroup (trainingsGroup_id, trainingsGroup_name , trainingsGroup_difficulty, trainingsGroup_duration) VALUES (?,?,?,?);', [getNextfreeIndexInTrainingsGroup( await getAllTrainingsGroups()), trainingsGroup_name, trainingsGroup_difficulty, trainingsGroup_duration], (err) => {
+    db.run('INSERT INTO TrainingsGroup (trainingsGroup_id, trainingsGroup_name , trainingsGroup_difficulty, trainingsGroup_duration) VALUES (?,?,?,?);', [getNextfreeIndexInTrainingsGroup(await getAllTrainingsGroups()), trainingsGroup_name, trainingsGroup_difficulty, trainingsGroup_duration], (err) => {
         if (err) {
             console.log(err.message + "erro in addTrainingsGroup");
 
@@ -135,22 +133,23 @@ export async function addTrainingsGroup(trainingsGroup_name: string, trainingsGr
 
 
 export function deleteTrainingsGroup(trainingsGroup_id: number) {
-    db.run('DELETE FROM TrainingsGroup WHERE trainingsGroup_id =  ? ;', [trainingsGroup_id] ,(err) => {
-       if (err){
-           console.log(err.message  + "erro in deleteTrainingsGroup");
-       }
-       else{
-           console.log("gruppe gelöscht");
-       }
+    db.run('DELETE FROM TrainingsGroup WHERE trainingsGroup_id =  ? ;', [trainingsGroup_id], (err) => {
+        if (err) {
+            console.log(err.message + "erro in deleteTrainingsGroup");
+        } else {
+            console.log("gruppe gelöscht");
+        }
     });
 }
 
 export function getNextfreeIndexInTrainingsGroup(array: trainingsGroup[]): number {
-    array.sort(function (a, b){return a.trainingsGroup_id - b.trainingsGroup_id;});
+    array.sort(function (a, b) {
+        return a.trainingsGroup_id - b.trainingsGroup_id;
+    });
 
 
     for (let index = 0; index < array.length; index++) {
-        if (array[index].trainingsGroup_id != index){
+        if (array[index].trainingsGroup_id != index) {
             return index;
         }
     }

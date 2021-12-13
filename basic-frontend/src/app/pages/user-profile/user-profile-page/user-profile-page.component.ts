@@ -64,4 +64,8 @@ export class UserProfilePageComponent implements OnInit {
     });
   }
 
+  deleteUebungeFromTrainingsPlas(trainingsP_id: string, uebungs_id:string){
+
+  }
+
 }

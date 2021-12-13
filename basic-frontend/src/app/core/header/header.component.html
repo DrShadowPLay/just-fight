@@ -6,7 +6,7 @@
     <nb-icon calss="iconInHead" icon="home-outline"></nb-icon>
   </button>
 </a>
-<button (click)="opendialog(addTeacherTemplate)" nbButton outline heros status="success" size="medium"
+<button (click)="opendialog(addTeacherTemplate) " nbButton outline heros status="success" size="medium"
         id="addTeacherButton">
   <nb-icon icon="person-add-outline"></nb-icon>
 </button>
@@ -37,10 +37,10 @@
       </nb-option>
     </nb-select>
     <!-- <input formControlName="school_idInput" id="school_id" nbInput> -->
-    <input formControlName="nameInput"  id ="name" nbInput>
-    <input formControlName="lastNameInput"  id="lastName" nbInput>
-    <input formControlName="emailInput"  id="mail" nbInput>
-    <input formControlName="telNrInput"  id="telNr" nbInput>
+    <input placeholder="name" formControlName="nameInput"  id ="name" nbInput>
+    <input placeholder="last name" formControlName="lastNameInput"  id="lastName" nbInput>
+    <input placeholder="only Email as Email" formControlName="emailInput"  id="mail" nbInput>
+    <input placeholder="telNr" formControlName="telNrInput"  id="telNr" nbInput>
     <button nbButton outline hero status="success" type="submit">
       Submit
       <nb-icon icon="done-all-outline"></nb-icon>
@@ -50,9 +50,9 @@
 
 <ng-template #addSchoolTemplate let-ref="dialogRef">
   <form [formGroup]="addSchoolForm" (ngSubmit)="addSchool()">
-    <input formControlName="school_nameInput" id="school_name" nbInput>
-    <input formControlName="school_placeInput"  id ="school_place" nbInput>
-    <input formControlName="school_plzInput"  id="school_plz" nbInput>
+    <input placeholder="name" formControlName="school_nameInput" id="school_name" nbInput>
+    <input palceholder="schule Plz" formControlName="school_placeInput"  id ="school_place" nbInput>
+    <input placeholder="school plz" formControlName="school_plzInput"  id="school_plz" nbInput>
     <button nbButton outline hero status="success" type="submit">
       Submit
       <nb-icon icon="done-all-outline"></nb-icon>
@@ -63,12 +63,12 @@
 
 <ng-template #addStudentTemplate let-ref="dialogRef">
   <form [formGroup]="addStudentForm" (ngSubmit)="addStudent()">
-    <input formControlName="student_nameInput" id ="student_name" nbInput>
-    <input formControlName="student_lastNameInput" id ="student_lastName" nbInput>
-    <input formControlName="student_ageInput" id ="student_age" nbInput>
-    <input formControlName="student_lvlInput" id ="student_lvl" nbInput>
-    <input formControlName="student_mailInput" id ="student_mail" nbInput>
-    <input formControlName="student_telNumberInput" id ="student_telNumber" nbInput>
+    <input placeholder="name" formControlName="student_nameInput" id ="student_name" nbInput>
+    <input placeholder="studentlastname" formControlName="student_lastNameInput" id ="student_lastName" nbInput>
+    <input placeholder="age" formControlName="student_ageInput" id ="student_age" nbInput>
+    <input placeholder="studnet lvl" formControlName="student_lvlInput" id ="student_lvl" nbInput>
+    <input placeholder="mail only as mail" formControlName="student_mailInput" id ="student_mail" nbInput>
+    <input  placeholder ="studenttel" formControlName="student_telNumberInput" id ="student_telNumber" nbInput>
     <button nbButton outline hero status="success" type="submit">
       Submit
       <nb-icon icon="done-all-outline"></nb-icon>

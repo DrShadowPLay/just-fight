@@ -28,6 +28,7 @@ import {KostenPageComponent} from "./pages/infos/kosten-page/kosten-page.compone
 import {SchoolService} from "./core/services/school.service";
 import {StudentService} from './core/services/student.service';
 import {TrainingsPlanService} from "./core/services/trainings-plan.service";
+
 //import { PagesComponent } from './pages/pages.component';
 
 @NgModule({

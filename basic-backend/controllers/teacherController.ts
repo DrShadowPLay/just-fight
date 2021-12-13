@@ -13,10 +13,10 @@ const router = express.Router();
 router.post('/', (req: any, res: any) => { //done
     if (req.school_id) {
         //console.log(req);
-        addOneTeacherToschoool(req.school_id, req.body.teacher_name, req.body.teacher_lastName, req.body.teacher_mail, req.body.teacher_telNumber).then(teacher =>{
+        addOneTeacherToschoool(req.school_id, req.body.teacher_name, req.body.teacher_lastName, req.body.teacher_mail, req.body.teacher_telNumber).then(teacher => {
             res.status(200).send(teacher);
 
-        }).catch(err =>{
+        }).catch(err => {
             res.status(404).send(err);
 
         });
@@ -38,7 +38,7 @@ router.get('/', (_req: any, res: any) => {//done
 
 router.get('/:teacher_id', ((req: any, res: any) => { //done
     if (req.school_id) {//done
-        getOneTeacherFromSchool(req.school_id , req.params.teacher_id).then(teacher => {
+        getOneTeacherFromSchool(req.school_id, req.params.teacher_id).then(teacher => {
             res.status(200).send(teacher);
         }).catch(err => {
             res.status(404).send(err.message, +err);

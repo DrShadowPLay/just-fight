@@ -5,7 +5,7 @@
 
 }
 
-:host{
+:host {
   display: flex;
   width: 100%;
   justify-content: flex-start;
@@ -13,7 +13,7 @@
 
 .header-nav {
   color: #fff;
-    display: inline-block;
+  display: inline-block;
   line-height: 56px;
 }
 
@@ -25,26 +25,26 @@
   float: right;
 }
 
-#buttonMenue{
+#buttonMenue {
   margin-left: auto;
 
 
 }
 
-#addTeacherButton{
+#addTeacherButton {
   margin-right: 7px;
   margin-left: 7px;
 }
-#addStudent{
+
+#addStudent {
   margin-right: 7px;
 }
 
-#sidebareButton{
+#sidebareButton {
   margin-right: 7px;
 }
 
 
-
-.iconInHead{
+.iconInHead {
   font-size: 2rem;
 }

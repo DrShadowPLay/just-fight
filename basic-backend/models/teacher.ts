@@ -5,7 +5,6 @@ import {trainingsplan} from "../types/trainingsplan-interface";
 import {uebungen} from "../types/uebungs-interface";
 
 
-
 export function getOneTeacher(teacher_id: number): Promise<teacher> {
     return new Promise<teacher>((resolve, reject) => {
         db.get('SELECT * FROM Teacher WHERE  teacher_id =? ', [teacher_id], (err, teacherRow) => {
@@ -85,8 +84,7 @@ export function getOneTeacher(teacher_id: number): Promise<teacher> {
                     }
 
                 });
-            }
-            else {
+            } else {
                 reject("bad request");
             }
         });
@@ -188,9 +186,9 @@ export function getAllTeachers(): Promise<teacher[]> {
     });
 }
 
-export function getOneTeacherFromSchool(school_id: number ,teacher_id:number): Promise<teacher> {
+export function getOneTeacherFromSchool(school_id: number, teacher_id: number): Promise<teacher> {
     return new Promise<teacher>((resolve, reject) => {
-        db.all('SELECT * FROM Teacher WHERE school_id = ? AND teacher_id = ?;', [school_id ,teacher_id], (err, teacherRow) => {
+        db.all('SELECT * FROM Teacher WHERE school_id = ? AND teacher_id = ?;', [school_id, teacher_id], (err, teacherRow) => {
 
             if (err) {
                 reject(err);
@@ -207,9 +205,9 @@ export function getOneTeacherFromSchool(school_id: number ,teacher_id:number): P
                                 if (err) {
                                     reject(err);
                                 } else if (trainingsPlanRow && trainingsPlanRow[0]) {
-                                    let uebungsArray : uebungen[] =[];
+                                    let uebungsArray: uebungen[] = [];
                                     for (const trainingsPlanRowElement of trainingsPlanRow) {
-                                        let thisTrainingsPlan : trainingsplan ={
+                                        let thisTrainingsPlan: trainingsplan = {
                                             trainingsP_id: trainingsPlanRowElement.trainingsP_id,
                                             student_id: trainingsPlanRowElement.student_id,
                                             trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
@@ -230,8 +228,7 @@ export function getOneTeacherFromSchool(school_id: number ,teacher_id:number): P
                                         trainingsPlan: trainingsPlanArray
                                     }
                                     studentsOfTeacher.push(thisStudent)
-                                }
-                                else{
+                                } else {
                                     let thisStudent: student = {
                                         student_id: studentRowElemt.student_id,
                                         student_name: studentRowElemt.student_name,
@@ -276,23 +273,20 @@ export async function addOneTeacherToschoool(school_id: number, teacher_name: st
     });
 }
 
-export function delteTeacherGenerell(teacher_id: number){
-    db.run('DELETE FROM TeachStu WHERE teacher_id = ?;' ,[teacher_id] ,(err=>{
-        if (err){
+export function delteTeacherGenerell(teacher_id: number) {
+    db.run('DELETE FROM TeachStu WHERE teacher_id = ?;', [teacher_id], (err => {
+        if (err) {
             console.log(err.message);
 
-        }
-        else
-        {
+        } else {
             console.log("lerhre gelöscht");
         }
 
     }));
-    db.run('DELETE FROM Teacher WHERE teacher_id  =?;', [teacher_id] , (err)=>{
-        if(err){
+    db.run('DELETE FROM Teacher WHERE teacher_id  =?;', [teacher_id], (err) => {
+        if (err) {
             console.log(err);
-        }
-        else {
+        } else {
             console.log("teacher geloescht");
         }
     })
@@ -308,12 +302,15 @@ export function deleteTeacherFromSchool(teacher_id: number, school_id: number) {
         }
     });
 }
+
 export function getNextfreeIndexOfTeacher(array: teacher[]): number {
-    array.sort(function (a, b){return a.teacher_id - b.teacher_id;});
+    array.sort(function (a, b) {
+        return a.teacher_id - b.teacher_id;
+    });
 
 
     for (let index = 0; index < array.length; index++) {
-        if (array[index].teacher_id != index){
+        if (array[index].teacher_id != index) {
             return index;
         }
     }

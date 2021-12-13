@@ -6,7 +6,6 @@ import {uebungen} from "../types/uebungs-interface";
 import {trainingsplan} from "../types/trainingsplan-interface";
 
 
-
 export function getAllStudentsGenerell(): Promise<student[]> {
     return new Promise<student[]>((resolve, reject) => {
         let thisStudentArrray: student[] = [];
@@ -20,120 +19,15 @@ export function getAllStudentsGenerell(): Promise<student[]> {
                 anzahlStudents = studentRow.length;
                 let trainingsPlanArray: trainingsplan[] = [];
                 for (const studentRowElement of studentRow) {
-                    db.all('SELECT * FROM TrainingsPlan WHERE student_id  = ?', [studentRowElement.student_id], (err, trainingsPlanRow)=>{
-                        counter = counter +1;
-                        if (err){
-                           console.log(" erro in  getAllStudentsGenerell trainingsPlanRow");
-                           reject(err);
-                       }
-                       else if(trainingsPlanRow && trainingsPlanRow[0]){
-                           let uebungsArray :uebungen[] = [];
-                           for (const trainingsPlanRowElement of trainingsPlanRow) {
-                               let thistrainingsPlan : trainingsplan  ={
-                                   trainingsP_id: trainingsPlanRowElement.trainingsP_id,
-                                   student_id: trainingsPlanRowElement.student_id,
-                                   trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
-                                   trainingsplan_date: trainingsPlanRowElement.trainingsplan_date,
-                                   trainingsplan_time: trainingsPlanRowElement.trainingsplan_time,
-                                   uebunge: uebungsArray
-                               }
-                               trainingsPlanArray.push(thistrainingsPlan);
-                           }
-                            let thisStudent: student = {
-                                student_id: studentRowElement.student_id,
-                                student_name: studentRowElement.student_name,
-                                student_lastName: studentRowElement.student_lastName,
-                                student_age: studentRowElement.student_age,
-                                student_lvl: studentRowElement.student_lvl,
-                                student_mail: studentRowElement.student_mail,
-                                student_telNumber: studentRowElement.student_telNumber,
-                                trainingsPlan : trainingsPlanArray
-                            }
-                            thisStudentArrray.push(thisStudent);
-                            if (counter == anzahlStudents){
-                                resolve(thisStudentArrray);
-                            }
-
-                       }
-                       else {
-                            let thisStudent: student = {
-                                student_id: studentRowElement.student_id,
-                                student_name: studentRowElement.student_name,
-                                student_lastName: studentRowElement.student_lastName,
-                                student_age: studentRowElement.student_age,
-                                student_lvl: studentRowElement.student_lvl,
-                                student_mail: studentRowElement.student_mail,
-                                student_telNumber: studentRowElement.student_telNumber,
-                                trainingsPlan : trainingsPlanArray
-                            }
-                            thisStudentArrray.push(thisStudent);
-                            if (counter == anzahlStudents){
-                                resolve(thisStudentArrray);
-                            }
-                        }
-
-                    });
-                }
-            }
-            else {
-                resolve(thisStudentArrray);
-            }
-        });
-    });
-
-}
-
-export function getAllStudentsthereNotInThisSchool(school_id:number): Promise<student[]> {
-    return new Promise<student[]>((resolve, reject) => {
-        let thisStudentArrray: student[] = [];
-        let falsStudentsArray: student[] = [];
-        let falsStudentsArray_id: number[] = [];
-
-        let counter: number = 0;
-        let anzahlStudents: number = 0;
-        db.all('SELECT * FROM SchoStud WHERE school_id = ?', [school_id], (err, student)=>{
-            console.log(student)
-            if (err){
-                reject(err);
-            }
-            else if(student && student[0]){
-                console.log(student.length + " leange")
-                for (const studentElement of student) {
-                    falsStudentsArray.push(studentElement)
-                }
-                for (const student of falsStudentsArray) {
-                    falsStudentsArray_id.push(student.student_id)
-                }
-                console.log(falsStudentsArray_id);
-                console.log("dDAAAVOREasdsadsddadadaQQQQQQQ");
-            }
-        })
-
-
-
-        db.all('SELECT s.* FROM Student s , SchoStud st WHERE st.school_id = ? AND s.student_id NOT IN(st.student_id)', [school_id],(err, studentRow) => {
-            console.log(falsStudentsArray_id);
-            console.log("dasdsadsddadadaQQQQQQQ");
-            console.log(studentRow)
-
-
-            if (err) {
-                console.log(" erro in getAllStudentsGenerell ");
-                reject(err);
-            } else if (studentRow && studentRow[0]) {
-                anzahlStudents = studentRow.length;
-                let trainingsPlanArray: trainingsplan[] = [];
-                for (const studentRowElement of studentRow) {
-                    db.all('SELECT * FROM TrainingsPlan WHERE student_id  = ?', [studentRowElement.student_id], (err, trainingsPlanRow)=>{
-                        counter = counter +1;
-                        if (err){
+                    db.all('SELECT * FROM TrainingsPlan WHERE student_id  = ?', [studentRowElement.student_id], (err, trainingsPlanRow) => {
+                        counter = counter + 1;
+                        if (err) {
                             console.log(" erro in  getAllStudentsGenerell trainingsPlanRow");
                             reject(err);
-                        }
-                        else if(trainingsPlanRow && trainingsPlanRow[0]){
-                            let uebungsArray :uebungen[] = [];
+                        } else if (trainingsPlanRow && trainingsPlanRow[0]) {
+                            let uebungsArray: uebungen[] = [];
                             for (const trainingsPlanRowElement of trainingsPlanRow) {
-                                let thistrainingsPlan : trainingsplan  ={
+                                let thistrainingsPlan: trainingsplan = {
                                     trainingsP_id: trainingsPlanRowElement.trainingsP_id,
                                     student_id: trainingsPlanRowElement.student_id,
                                     trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
@@ -151,15 +45,14 @@ export function getAllStudentsthereNotInThisSchool(school_id:number): Promise<st
                                 student_lvl: studentRowElement.student_lvl,
                                 student_mail: studentRowElement.student_mail,
                                 student_telNumber: studentRowElement.student_telNumber,
-                                trainingsPlan : trainingsPlanArray
+                                trainingsPlan: trainingsPlanArray
                             }
                             thisStudentArrray.push(thisStudent);
-                            if (counter == anzahlStudents){
+                            if (counter == anzahlStudents) {
                                 resolve(thisStudentArrray);
                             }
 
-                        }
-                        else {
+                        } else {
                             let thisStudent: student = {
                                 student_id: studentRowElement.student_id,
                                 student_name: studentRowElement.student_name,
@@ -168,26 +61,120 @@ export function getAllStudentsthereNotInThisSchool(school_id:number): Promise<st
                                 student_lvl: studentRowElement.student_lvl,
                                 student_mail: studentRowElement.student_mail,
                                 student_telNumber: studentRowElement.student_telNumber,
-                                trainingsPlan : trainingsPlanArray
+                                trainingsPlan: trainingsPlanArray
                             }
                             thisStudentArrray.push(thisStudent);
-                            if (counter == anzahlStudents){
+                            if (counter == anzahlStudents) {
                                 resolve(thisStudentArrray);
                             }
                         }
 
                     });
                 }
+            } else {
+                resolve(thisStudentArrray);
             }
+        });
+    });
+
+}
+
+export function getAllStudentsthereNotInThisSchool(school_id: number): Promise<student[]> {
+    return new Promise<student[]>((resolve, reject) => {
+        let thisStudentArrray: student[] = [];
+        let falsStudentsArray: student[] = [];
+        let falsStudentsArray_id: number[] = [];
+
+        let counter: number = 0;
+        let anzahlStudents: number = 0;
+        db.all('SELECT * FROM SchoStud WHERE school_id = ?', [school_id], (err, student) => {
+            console.log(student)
+            if (err) {
+                reject(err);
+            } else if (student && student[0]) {
+                console.log(student.length + " leange")
+                for (const studentElement of student) {
+                    falsStudentsArray.push(studentElement)
+                }
+                for (const student of falsStudentsArray) {
+                    falsStudentsArray_id.push(student.student_id)
+                }
+                console.log(falsStudentsArray_id);
+                console.log("dDAAAVOREasdsadsddadadaQQQQQQQ");
+            }
+        })
 
 
-            else if (falsStudentsArray.length == 0){
+        db.all('SELECT s.* FROM Student s , SchoStud st WHERE st.school_id = ? AND s.student_id NOT IN(st.student_id)', [school_id], (err, studentRow) => {
+            console.log(falsStudentsArray_id);
+            console.log("dasdsadsddadadaQQQQQQQ");
+            console.log(studentRow)
+
+
+            if (err) {
+                console.log(" erro in getAllStudentsGenerell ");
+                reject(err);
+            } else if (studentRow && studentRow[0]) {
+                anzahlStudents = studentRow.length;
+                let trainingsPlanArray: trainingsplan[] = [];
+                for (const studentRowElement of studentRow) {
+                    db.all('SELECT * FROM TrainingsPlan WHERE student_id  = ?', [studentRowElement.student_id], (err, trainingsPlanRow) => {
+                        counter = counter + 1;
+                        if (err) {
+                            console.log(" erro in  getAllStudentsGenerell trainingsPlanRow");
+                            reject(err);
+                        } else if (trainingsPlanRow && trainingsPlanRow[0]) {
+                            let uebungsArray: uebungen[] = [];
+                            for (const trainingsPlanRowElement of trainingsPlanRow) {
+                                let thistrainingsPlan: trainingsplan = {
+                                    trainingsP_id: trainingsPlanRowElement.trainingsP_id,
+                                    student_id: trainingsPlanRowElement.student_id,
+                                    trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
+                                    trainingsplan_date: trainingsPlanRowElement.trainingsplan_date,
+                                    trainingsplan_time: trainingsPlanRowElement.trainingsplan_time,
+                                    uebunge: uebungsArray
+                                }
+                                trainingsPlanArray.push(thistrainingsPlan);
+                            }
+                            let thisStudent: student = {
+                                student_id: studentRowElement.student_id,
+                                student_name: studentRowElement.student_name,
+                                student_lastName: studentRowElement.student_lastName,
+                                student_age: studentRowElement.student_age,
+                                student_lvl: studentRowElement.student_lvl,
+                                student_mail: studentRowElement.student_mail,
+                                student_telNumber: studentRowElement.student_telNumber,
+                                trainingsPlan: trainingsPlanArray
+                            }
+                            thisStudentArrray.push(thisStudent);
+                            if (counter == anzahlStudents) {
+                                resolve(thisStudentArrray);
+                            }
+
+                        } else {
+                            let thisStudent: student = {
+                                student_id: studentRowElement.student_id,
+                                student_name: studentRowElement.student_name,
+                                student_lastName: studentRowElement.student_lastName,
+                                student_age: studentRowElement.student_age,
+                                student_lvl: studentRowElement.student_lvl,
+                                student_mail: studentRowElement.student_mail,
+                                student_telNumber: studentRowElement.student_telNumber,
+                                trainingsPlan: trainingsPlanArray
+                            }
+                            thisStudentArrray.push(thisStudent);
+                            if (counter == anzahlStudents) {
+                                resolve(thisStudentArrray);
+                            }
+                        }
+
+                    });
+                }
+            } else if (falsStudentsArray.length == 0) {
                 //resolve(getAllStudentsGenerell());
                 resolve(thisStudentArrray);
             }
         });
-
-
 
 
     });
@@ -289,7 +276,7 @@ export function getAllStudentsFromSchool(school_id: number): Promise<student[]> 
         let thisStudentArrray: student[] = [];
         let counter: number = 0;
         let anzahlStudents: number = 0;
-        db.all('SELECT s.* FROM Student s , SchoStud st WHERE s.student_id = st.student_id AND  st.school_id =?',[school_id], (err, studentRow) => {
+        db.all('SELECT s.* FROM Student s , SchoStud st WHERE s.student_id = st.student_id AND  st.school_id =?', [school_id], (err, studentRow) => {
             console.log(studentRow)
             if (err) {
                 console.log(" erro in getAllStudentsGenerell ");
@@ -298,16 +285,15 @@ export function getAllStudentsFromSchool(school_id: number): Promise<student[]> 
                 anzahlStudents = studentRow.length;
                 let trainingsPlanArray: trainingsplan[] = [];
                 for (const studentRowElement of studentRow) {
-                    db.all('SELECT * FROM TrainingsPlan WHERE student_id  = ?', [studentRowElement.student_id], (err, trainingsPlanRow)=>{
-                        counter = counter +1;
-                        if (err){
+                    db.all('SELECT * FROM TrainingsPlan WHERE student_id  = ?', [studentRowElement.student_id], (err, trainingsPlanRow) => {
+                        counter = counter + 1;
+                        if (err) {
                             console.log(" erro in  getAllStudentsGenerell trainingsPlanRow");
                             reject(err);
-                        }
-                        else if(trainingsPlanRow && trainingsPlanRow[0]){
-                            let uebungsArray :uebungen[] = [];
+                        } else if (trainingsPlanRow && trainingsPlanRow[0]) {
+                            let uebungsArray: uebungen[] = [];
                             for (const trainingsPlanRowElement of trainingsPlanRow) {
-                                let thistrainingsPlan : trainingsplan  ={
+                                let thistrainingsPlan: trainingsplan = {
                                     trainingsP_id: trainingsPlanRowElement.trainingsP_id,
                                     student_id: trainingsPlanRowElement.student_id,
                                     trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
@@ -325,15 +311,14 @@ export function getAllStudentsFromSchool(school_id: number): Promise<student[]> 
                                 student_lvl: studentRowElement.student_lvl,
                                 student_mail: studentRowElement.student_mail,
                                 student_telNumber: studentRowElement.student_telNumber,
-                                trainingsPlan : trainingsPlanArray
+                                trainingsPlan: trainingsPlanArray
                             }
                             thisStudentArrray.push(thisStudent);
-                            if (counter == anzahlStudents){
+                            if (counter == anzahlStudents) {
                                 resolve(thisStudentArrray);
                             }
 
-                        }
-                        else {
+                        } else {
                             let thisStudent: student = {
                                 student_id: studentRowElement.student_id,
                                 student_name: studentRowElement.student_name,
@@ -342,18 +327,17 @@ export function getAllStudentsFromSchool(school_id: number): Promise<student[]> 
                                 student_lvl: studentRowElement.student_lvl,
                                 student_mail: studentRowElement.student_mail,
                                 student_telNumber: studentRowElement.student_telNumber,
-                                trainingsPlan : trainingsPlanArray
+                                trainingsPlan: trainingsPlanArray
                             }
                             thisStudentArrray.push(thisStudent);
-                            if (counter == anzahlStudents){
+                            if (counter == anzahlStudents) {
                                 resolve(thisStudentArrray);
                             }
                         }
 
                     });
                 }
-            }
-            else {
+            } else {
 
                 resolve(thisStudentArrray);
             }
@@ -374,11 +358,10 @@ export async function addOneStudent(student_name: string, student_lastName: stri
 }
 
 export async function addOneStudentToSchool(school_id: number, student_id: number) {
-    db.get('SELECT * FROM Student WHERE student_id = ?', [student_id] , (err, row) =>{
-        if (err){
+    db.get('SELECT * FROM Student WHERE student_id = ?', [student_id], (err, row) => {
+        if (err) {
             console.log(err.message);
-        }
-        else if (row){
+        } else if (row) {
             db.run('INSERT INTO SchoStud(school_id, student_id) VALUES (?,?);', [school_id, student_id], (err) => {
                 if (err) {
                     console.log(err);
@@ -443,11 +426,13 @@ export function deleteOneStudentFromSchoool(school_id: number, student_id: numbe
 }
 
 export function getNextfreeIndexOfStudent(array: student[]): number {
-    array.sort(function (a, b){return a.student_id - b.student_id;});
+    array.sort(function (a, b) {
+        return a.student_id - b.student_id;
+    });
 
 
     for (let index = 0; index < array.length; index++) {
-        if (array[index].student_id != index){
+        if (array[index].student_id != index) {
             return index;
         }
     }

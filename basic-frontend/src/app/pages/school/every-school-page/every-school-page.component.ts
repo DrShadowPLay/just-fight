@@ -99,6 +99,11 @@ export class EverySchoolPageComponent implements OnInit {
        this.getStudentFromSchool();
     });
 
+
+
+
+
+
 }
 
 
