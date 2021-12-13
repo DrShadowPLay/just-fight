@@ -60,7 +60,6 @@ export class UserProfilePageComponent implements OnInit {
       this.ref.detectChanges();
 
     }, error => {
-      console.log(error.message);
     });
   }
 

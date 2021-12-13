@@ -13,6 +13,6 @@ export class TrainingsPlanService {
 
   }
   getAllTrainingsPlanFromStudent(student_id : number , school_id: number) :Observable<trainingsplan[]>{
-    return this.http.get<trainingsplan[]>(`http://localhost:3000/api/school/${school_id}/student/${school_id}/trainingsplan`)
+    return this.http.get<trainingsplan[]>(`http://localhost:3000/api/school/${school_id}/student/${student_id}/trainingsplan`)
   }
 }

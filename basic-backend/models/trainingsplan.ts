@@ -133,12 +133,14 @@ export function getTrainingsPlanFromStudent(student_id: number): Promise<trainin
                                 }
                                 uebungenFromTrainingsPlan.push(thisUebung);
                             }
+
+
                             let thisTrainingsPlan: trainingsplan = {
-                                trainingsP_id: trainingsPlanRow[0].trainingsP_id,
-                                student_id: trainingsPlanRow[0].student_id,
-                                trainingsGroup_id: trainingsPlanRow[0].trainingsGroup_id,
-                                trainingsplan_date: trainingsPlanRow[0].trainingsplan_date,
-                                trainingsplan_time: trainingsPlanRow[0].trainingsplan_time,
+                                trainingsP_id: trainingsPlanRowElement.trainingsP_id,
+                                student_id: trainingsPlanRowElement.student_id,
+                                trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
+                                trainingsplan_date: trainingsPlanRowElement.trainingsplan_date,
+                                trainingsplan_time: trainingsPlanRowElement.trainingsplan_time,
                                 uebunge: uebungenFromTrainingsPlan
                             }
 
@@ -150,11 +152,11 @@ export function getTrainingsPlanFromStudent(student_id: number): Promise<trainin
 
                         } else {
                             let thisTrainingsPlan: trainingsplan = {
-                                trainingsP_id: trainingsPlanRow[0].trainingsP_id,
-                                student_id: trainingsPlanRow[0].student_id,
-                                trainingsGroup_id: trainingsPlanRow[0].trainingsGroup_id,
-                                trainingsplan_date: trainingsPlanRow[0].trainingsplan_date,
-                                trainingsplan_time: trainingsPlanRow[0].trainingsplan_time,
+                                trainingsP_id: trainingsPlanRowElement.trainingsP_id,
+                                student_id: trainingsPlanRowElement.student_id,
+                                trainingsGroup_id: trainingsPlanRowElement.trainingsGroup_id,
+                                trainingsplan_date: trainingsPlanRowElement.trainingsplan_date,
+                                trainingsplan_time: trainingsPlanRowElement.trainingsplan_time,
                                 uebunge: uebungenFromTrainingsPlan
                             }
                             trainingsPlanArray.push(thisTrainingsPlan);

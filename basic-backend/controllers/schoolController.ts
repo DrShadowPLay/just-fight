@@ -13,8 +13,7 @@ declare module 'express-serve-static-core' {
 }
 
 
-const router = express.Router();
-
+const  router = express.Router();
 
 router.use('/:school_id/teacher',teacherRouter);
 router.use('/:school_id/student', studentRouter);
